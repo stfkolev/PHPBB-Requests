@@ -1,0 +1,9 @@
+evilsystem_requests_controller:
+    path: /requests/{name}
+    defaults: { _controller: evilsystem.requests.controller.main:handle }
+
+evilsystem_requests_controller:
+    path: /requests/{id}
+    defaults: { _controller: evilsystem.requests.controller.main:view }
+    requirements:
+        id: \d+

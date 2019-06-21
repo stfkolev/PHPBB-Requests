@@ -1,0 +1,44 @@
+imports:
+    - { resource: tables.yml }
+
+services:
+    evilsystem.requests.controller.main:
+        class: evilsystem\requests\controller\main_controller
+        arguments:
+            - '@config'
+            - '@controller.helper'
+            - '@template'
+            - '@language'
+            - '@request'
+            - '@dbal.conn'
+            - '@user'
+            - '%evilsystem.requests.tables.evilsystem_requests_table%'
+            - '%evilsystem.requests.tables.evilsystem_requests_replies%'
+
+    evilsystem.requests.controller.ucp:
+        class: evilsystem\requests\controller\ucp_controller
+        arguments:
+            - '@dbal.conn'
+            - '@language'
+            - '@request'
+            - '@template'
+            - '@user'
+
+    evilsystem.requests.listener:
+        class: evilsystem\requests\event\main_listener
+        arguments:
+            - '@language'
+            - '@controller.helper'
+            - '@template'
+            - '%core.php_ext%'
+        tags:
+            - { name: event.listener }
+
+    evilsystem.requests.notification.type.sample:
+        class: evilsystem\requests\notification\type\sample
+        shared: false # service MUST not be shared for this to work!
+        parent: notification.type.base
+        calls:
+            - [set_controller_helper, ['@controller.helper']]
+        tags:
+            - { name: notification.type }

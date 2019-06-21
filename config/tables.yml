@@ -1,0 +1,3 @@
+parameters:
+  evilsystem.requests.tables.evilsystem_requests_table: '%core.table_prefix%evilsystem_requests_table'
+  evilsystem.requests.tables.evilsystem_requests_replies:  '%core.table_prefix%evilsystem_requests_replies'

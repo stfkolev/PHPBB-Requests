@@ -1,0 +1,53 @@
+{% include 'overall_header.html' %}
+
+<h2 class="solo">{{ lang('REQUESTS_PAGE') }}</h2>
+
+<div class="action-bar bar-top">
+    <!-- IF S_REGISTERED_USER -->
+    <a href="make" class="button" title="Make new request">
+        <span>{{ lang('REQUESTS_MAKE_REQUEST') }}</span> <i class="icon fa-plus fa-fw" aria-hidden="true"></i>
+    </a>
+    <!-- ENDIF -->
+<div class="pagination">
+ {{ lang('REQUESTS_COUNT', REQUESTS_COUNT) }} • {{ lang('REQUESTS_PAGINATION', 1, 1)}}
+</div>
+
+</div>
+
+<div class="forumbg forumbg-table">
+    <div class="inner">
+
+    <table class="table1 show-header responsive" id="memberlist">
+    <thead>
+        <tr>
+            <th class="name" data-dfn="Request Title">{{ lang('REQUESTS_TABLE_TITLE') }}</th>
+            <th class="posts" style="padding-right: 2rem;">{{ lang('REQUESTS_TABLE_AUTHOR') }}</th>
+            <th class="info" style="padding-left: 5rem;">{{ lang('REQUESTS_TABLE_TYPE') }}</th>
+            <th class="joined">{{ lang('REQUESTS_TABLE_REPLIES') }}</th>
+            <th class="active">{{ lang('REQUESTS_TABLE_STATUS') }}</th>				
+        </tr>
+    </thead>
+    <tbody>
+         
+        {% if REQUESTS_COUNT %}
+        <!-- BEGIN request -->
+        <tr class="bg1">
+            <td><a href="{{ request.REQUEST_ID }}">{{ request.REQUEST_TITLE}}</a></td>
+            <td style="padding-right: 2rem;"><a href="../memberlist.php?mode=viewprofile&u={{ request.REQUEST_AUTHOR_ID }}" style="color: #{{ request.REQUEST_AUTHOR_COLOUR }};" class="username-coloured">{{ request.REQUEST_AUTHOR }}</a></td>
+            <td style="padding-left: 5rem;">{{ request.REQUEST_TYPE }}</td>
+            <td>{{ request.REQUEST_REPLIES }}</td>		
+            <td><a href="#">{{ request.REQUEST_STATUS }}</a></td>
+        </tr>
+        <!-- END request -->
+        {% else %}
+        <tr class="bg1">
+            <td colspan="5" style="text-align: center;">{{ lang('NO_REQUESTS_ATM')  }}</td>
+        </tr>
+        {% endif %}
+    </tbody>
+</table>
+
+</div>
+</div>
+
+{% include 'overall_footer.html' %}
