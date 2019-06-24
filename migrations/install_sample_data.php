@@ -44,23 +44,9 @@ class install_sample_data extends \phpbb\db\migration\migration
 	{
 		return array(
 			// Add new permissions
-			array('permission.add', array('a_new_evilsystem_requests')), // New admin permission
 			array('permission.add', array('m_new_evilsystem_requests')), // New moderator permission
-			array('permission.add', array('u_new_evilsystem_requests')), // New user permission
 
 			// array('permission.add', array('a_copy', true, 'a_existing')), // New admin permission a_copy, copies permission settings from a_existing
-
-			// Set our new permissions
-			array('permission.permission_set', array('ROLE_ADMIN_FULL', 'a_new_evilsystem_requests')), // Give ROLE_ADMIN_FULL a_new_evilsystem_requests permission
-			array('permission.permission_set', array('ROLE_USER_FULL', 'u_new_evilsystem_requests')), // Give ROLE_USER_FULL u_new_evilsystem_requests permission
-			array('permission.permission_set', array('ROLE_USER_STANDARD', 'u_new_evilsystem_requests')), // Give ROLE_USER_STANDARD u_new_evilsystem_requests permission
-			array('permission.permission_set', array('REGISTERED', 'u_new_evilsystem_requests', 'group')), // Give REGISTERED group u_new_evilsystem_requests permission
-			array('permission.permission_set', array('REGISTERED_COPPA', 'u_new_evilsystem_requests', 'group', false)), // Set u_new_evilsystem_requests to never for REGISTERED_COPPA
-
-			// Add new permission roles
-			array('permission.role_add', array('requests admin role', 'a_', 'a new role for admins')), // New role "requests admin role"
-			array('permission.role_add', array('requests moderator role', 'm_', 'a new role for moderators')), // New role "requests moderator role"
-			array('permission.role_add', array('requests user role', 'u_', 'a new role for users')), // New role "requests user role"
 
 			// Call a custom callable function to perform more complex operations.
 			array('custom', array(array($this, 'sample_callable_install'))),

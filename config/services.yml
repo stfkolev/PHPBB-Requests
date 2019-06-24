@@ -12,6 +12,8 @@ services:
             - '@request'
             - '@dbal.conn'
             - '@user'
+            - '%core.root_path%'
+            - '%core.php_ext%'
             - '%evilsystem.requests.tables.evilsystem_requests_table%'
             - '%evilsystem.requests.tables.evilsystem_requests_replies%'
 

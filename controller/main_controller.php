@@ -41,6 +41,12 @@ class main_controller
 
 	/** @var \evilsystem\requests\table */
 	protected $replies_table;
+	
+	/** @var string */
+	protected $php_ext;
+
+	/** @var string */
+	protected $root_path;
 
 	/**
 	 * Constructor
@@ -52,6 +58,8 @@ class main_controller
 	 * @param \phpbb\request\request					$request			Request object
 	 * @param \phpbb\db\driver\driver_interface 		$db					Database object
 	 * @param \phpbb\user								$user				User object
+	 * @param string                        			$root_path          phpBB root path
+     * @param string                        			$php_ext            phpEx 
 	 * @param \evilsystem\requests\table				$mods_table			String
 	 * @param \evilsystem\requests\table				$servers_table		String
 	 * 
@@ -65,6 +73,9 @@ class main_controller
 		\phpbb\request\request $request,
 		\phpbb\db\driver\driver_interface $db,
 		\phpbb\user $user,
+		
+		$root_path,
+		$php_ext,
 
 		$requests_table,
 		$replies_table
@@ -78,6 +89,9 @@ class main_controller
 		$this->request 			= $request;
 		$this->db 				= $db;
 		$this->user				= $user;
+
+		$this->root_path = $root_path;
+		$this->php_ext = $php_ext;
 
 		$this->requests_table 	= $requests_table;
 		$this->replies_table	= $replies_table;
@@ -229,7 +243,103 @@ class main_controller
 				break;
 			}
 			case $name: {
-				var_dump($this->user->data['user_colour']);
+				
+				/*! BBCode */
+				require_once $this->root_path . 'includes/functions_display.' . $this->php_ext;
+				require_once $this->root_path . 'includes/functions_posting.' . $this->php_ext;
+
+				$this->language->add_lang('posting');
+
+				display_custom_bbcodes();
+				generate_smilies('inline', 0);
+
+				$this->template->assign_vars([
+					'S_BBCODE_IMG'		=> true,
+					'S_BBCODE_QUOTE'	=> true,
+					'S_BBCODE_FLASH'	=> true,
+					'S_LINKS_ALLOWED'	=> true,
+
+					'S_SMILIES_ALLOWED'	=> true,
+				]);
+				/*! End BBCode */
+
+				/*! Data to search by */
+				$data = array(
+					'requests_id'	=> $name,
+				);
+
+				/*! Request */
+				$sql = 'SELECT * FROM ' . $this->requests_table . ' WHERE ' . $this->db->sql_build_array('SELECT', $data);
+
+				$request = $this->db->sql_fetchrow($this->db->sql_query($sql));
+
+				/*! Replies */
+				$data = array(
+					'replies_request_id'	=> $name,
+				);
+
+				/*! Get All replies for the current Request */
+				$sql = 'SELECT * FROM ' . $this->replies_table . ' WHERE ' . $this->db->sql_build_array('SELECT', $data);
+				$result = $this->db->sql_query($sql);
+				
+				/*! Create a block of vars of type replies */
+				while($row = $this->db->sql_fetchrow($result)) {
+
+					$find = array(
+						'user_id'	=> $row['replies_user_id']
+					);
+
+					/*! Find Author of reply */
+					$sql = 'SELECT * FROM ' . USERS_TABLE . ' WHERE ' . $this->db->sql_build_array('SELECT', $find);
+					$author = $this->db->sql_fetchrow($this->db->sql_query($sql));
+
+					/*! Assign block of variables */
+					$this->template->assign_block_vars('reply', array(
+						'REPLY_AUTHOR'					=> $author['username'],
+						'REPLY_AUTHOR_COLOUR'			=> $author['user_colour'],
+						'REPLY_ADDITIONAL'				=> $row['replies_additional']
+					));
+				}
+
+				/*! Author */
+				$data = array(
+					'user_id' => $request['requests_user_id'],
+				);
+
+				$sql = 'SELECT * FROM ' . USERS_TABLE . ' WHERE ' . $this->db->sql_build_array('SELECT', $data);
+				$author = $this->db->sql_fetchrow($this->db->sql_query($sql));
+
+				var_dump($request);
+
+				/*! Assing basic variables */
+				$this->template->assign_vars(array(
+					'REQUEST_ID'				=> $request['requests_id'],
+					'REQUEST_AUTHOR'			=> $author['username'],
+					'REQUEST_AUTHOR_COLOR'		=> $author['user_colour'],
+					'REQUEST_TITLE'				=> $request['requests_title'],
+					'REQUEST_TYPE'				=> $request['requests_type'],
+					'REQUEST_ADDITIONAL'		=> $request['requests_additional'],
+					'REQUEST_WIDTH'				=> $request['requests_width'],
+					'REQUEST_HEIGHT'			=> $request['requests_height'],
+					'REQUEST_STATUS'			=> $request['requests_status']
+				));
+
+				/*! If is user registered */	
+				if($this->user->data['is_registered']) {
+					/*! Add CSRF */
+					add_form_key('replies_add');
+
+					$errors = array();
+					
+					/*! Check if request is post */
+					if($this->request->is_set_post('submit')) {
+						// Add replies record
+					}
+
+				} else 
+					/*! User is not registered, redirect to all servers if he attempts to get to /servers/add by url */
+					redirect($this->helper->route('evilsystem_requests_controller', array('name' => 'all')));
+
 				$renderer = $this->helper->render('requests_reply.html', $name);
 				break;
 			}
