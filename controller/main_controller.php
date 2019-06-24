@@ -295,13 +295,15 @@ class main_controller
 					$sql = 'SELECT * FROM ' . USERS_TABLE . ' WHERE ' . $this->db->sql_build_array('SELECT', $find);
 					$author = $this->db->sql_fetchrow($this->db->sql_query($sql));
 					$authorAvatar = get_user_avatar($author['user_avatar'], $author['user_avatar_type'], $author['user_avatar_width'], $author['user_avatar_height']);
-
+					$authorRank = phpbb_get_user_rank($author, $author['user_posts']);
 
 					/*! Assign block of variables */
 					$this->template->assign_block_vars('reply', array(
 						'REPLY_AUTHOR'					=> $author['username'],
 						'REPLY_AUTHOR_COLOUR'			=> $author['user_colour'],
 						'REPLY_AUTHOR_AVATAR'			=> $authorAvatar,
+						'REPLY_AUTHOR_RANK'				=> $authorRank['img'] ?: $authorRank['title'],
+						'REPLY_AUTHOR_POSTS'			=> $author['user_posts'],
 						'REPLY_ADDITIONAL'				=> $row['replies_additional']
 					));
 				}
@@ -345,6 +347,15 @@ class main_controller
 					if($this->request->is_set_post('submit')) {
 						var_dump($this->request->variable('message', ''));
 						
+						$data = array(
+							'replies_user_id'		=> (int) $this->user->data['user_id'],
+							'replies_request_id'	=> (int) $name,
+							'replies_additional'	=> $this->request->variable('message', '')
+						);
+
+						$sql = 'INSERT INTO ' . $this->replies_table . ' ' . $this->db->sql_build_array('INSERT', $data);
+						$this->db->sql_query($sql);
+
 						/*! Redirect after 3 seconds if no action is taken */
 						meta_refresh(3, $this->helper->route('evilsystem_requests_controller', array('name' => 'all')));
 						$message = $this->language->lang('REQUESTS_REQUEST_ADDED') . '<br /><br />' . $this->language->lang('REQUESTS_RETURN', '<a href="' . $this->helper->route('evilsystem_requests_controller', array('name' => 'all')) . '">', '</a>');

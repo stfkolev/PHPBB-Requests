@@ -15,10 +15,11 @@
             <dl class="postprofile" id="profile4">
                 <dt class="has-profile-rank has-avatar">
                     <div class="avatar-container">
-                        <a href="#" class="avatar">{{ REQUEST_AUTHOR_AVATAR }}</a> 
+                        <a href="#" class="avatar">{{ REQUEST_AUTHOR_AVATAR }}</a>
                     </div>
-                    
-                    <a href="#" style="color: #{{ REQUEST_AUTHOR_COLOR }};" class="username-coloured">{{ REQUEST_AUTHOR }}</a>
+
+                    <a href="#" style="color: #{{ REQUEST_AUTHOR_COLOR }};"
+                        class="username-coloured">{{ REQUEST_AUTHOR }}</a>
                 </dt>
 
                 <dd class="profile-rank">{{ REQUEST_AUTHOR_RANK }}</dd>
@@ -33,14 +34,13 @@
 
                     <ul class="post-buttons">
                         <li>
-                            <a href="#" title="Accept"
-                                class="button button-icon-only">
-                                <i class="icon fa-check fa-fw" aria-hidden="true"></i><span class="sr-only">Accept</span>
+                            <a href="#" title="Accept" class="button button-icon-only">
+                                <i class="icon fa-check fa-fw" aria-hidden="true"></i><span
+                                    class="sr-only">Accept</span>
                             </a>
                         </li>
                         <li>
-                            <a href="#" title="Refuse"
-                                class="button button-icon-only">
+                            <a href="#" title="Refuse" class="button button-icon-only">
                                 <i class="icon fa-times fa-fw" aria-hidden="true"></i><span
                                     class="sr-only">Refuse</span>
                             </a>
@@ -52,14 +52,14 @@
                             <i class="icon fa-file fa-fw icon-lightgray icon-md" aria-hidden="true"></i><span
                                 class="sr-only">Post</span>
                         </a>
-                        <span class="responsive-hide">by <strong><a href="#"
-                                    style="color: #{{ REQUEST_AUTHOR_COLOR }};" class="username-coloured">{{ REQUEST_AUTHOR}}</a></strong>
+                        <span class="responsive-hide">by <strong><a href="#" style="color: #{{ REQUEST_AUTHOR_COLOR }};"
+                                    class="username-coloured">{{ REQUEST_AUTHOR}}</a></strong>
                     </p>
 
 
 
                     <div class="content">
-                        
+
                     </div>
                 </div>
 
@@ -74,6 +74,65 @@
 
         </div>
     </div>
+
+    <!-- BEGIN reply -->
+    <div class="post has-profile bg2">
+        <div class="inner">
+
+            <dl class="postprofile" id="profile1">
+                <dt class="has-profile-rank has-avatar">
+                    <div class="avatar-container">
+                        <a href="#" class="avatar">{{ reply.REPLY_AUTHOR_AVATAR }}</a> </div>
+                    <a href="#" style="color: #{{ reply.REPLY_AUTHOR_COLOR }};"
+                        class="username-coloured">{{ reply.REPLY_AUTHOR}}</a>
+                </dt>
+
+                <dd class="profile-rank">{{ reply.REPLY_AUTHOR_RANK }}</dd>
+                <dd class="profile-posts"><strong>Posts:</strong> {{ reply.REPLY_AUTHOR_POSTS }}
+                </dd>
+
+            </dl>
+
+            <div class="postbody">
+                <div id="post_content1">
+
+                    <h3 class="first"><a href="#">{{ REQUEST_TITLE }}</a></h3>
+
+                    <ul class="post-buttons">
+                        
+                    </ul>
+
+                    <p class="author">
+                        <a class="unread" href="./viewtopic.php?p=1#p1" title="Post">
+                            <i class="icon fa-file fa-fw icon-lightgray icon-md" aria-hidden="true"></i><span
+                                class="sr-only">Post</span>
+                        </a>
+                        <span class="responsive-hide">by <strong><a href="#"
+                                    style="color: #{{ reply.REPLY_AUTHOR_COLOR }};" class="username-coloured">{{ reply.REPLY_AUTHOR }}</a></strong>
+                    </p>
+
+
+
+                    <div class="content">{{ reply.REPLY_ADDITIONAL }}</div>
+
+
+
+
+
+                </div>
+
+            </div>
+
+            <div class="back2top">
+                <a href="#top" class="top" title="Top">
+                    <i class="icon fa-chevron-circle-up fa-fw icon-gray" aria-hidden="true"></i>
+                    <span class="sr-only">Top</span>
+                </a>
+            </div>
+
+        </div>
+    </div>
+    <!-- END reply -->
 
     <hr class="divider">
 
@@ -93,25 +152,28 @@
             <h2> Your reply</h2>
 
             <center>
-            <form id="postform" name="postform" method="post" action="{{ U_ACTION }}">
-            
-                {{ include('posting_buttons.html') }}
-                
-                <textarea name="message" id="message" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);" onfocus="initInsertions();" data-bbcode="true" rows="10"></textarea><br>
-                
-                <fieldset class="submit-buttons">
-                    <input type="submit" name="submit" id="submit" class="button1" value="{{ lang('SUBMIT') }}" tabindex="2" />&nbsp;
-                    {{ S_HIDDEN_FIELDS }}
-                    {{ S_FORM_TOKEN }}
-                </fieldset>
-      
-            </form>
+                <form id="postform" name="postform" method="post" action="{{ U_ACTION }}">
+
+                    {{ include('posting_buttons.html') }}
+
+                    <textarea name="message" id="message" onselect="storeCaret(this);" onclick="storeCaret(this);"
+                        onkeyup="storeCaret(this);" onfocus="initInsertions();" data-bbcode="true"
+                        rows="10"></textarea><br>
+
+                    <fieldset class="submit-buttons">
+                        <input type="submit" name="submit" id="submit" class="button1" value="{{ lang('SUBMIT') }}"
+                            tabindex="2" />&nbsp;
+                        {{ S_HIDDEN_FIELDS }}
+                        {{ S_FORM_TOKEN }}
+                    </fieldset>
+
+                </form>
             </center>
-        
+
             {# End BBCodes Form #}
         </div>
-        </div>
     </div>
-   
+</div>
+
 
 {% include 'overall_footer.html' %}
