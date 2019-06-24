@@ -9,18 +9,20 @@
         </a>
     </div>
 
-    <div id="p4" class="post has-profile bg2 online">
+    <div id="p4" class="post has-profile bg2">
         <div class="inner">
 
             <dl class="postprofile" id="profile4">
                 <dt class="has-profile-rank has-avatar">
                     <div class="avatar-container">
-                        <a href="#" class="avatar"><img class="avatar"
-                                src="#" width="60" height="60"
-                                alt="User avatar"></a> </div>
-                    <a href="#" style="color: #{{ REQUEST_AUTHOR_COLOR }};"
-                        class="username-coloured">{{ REQUEST_AUTHOR }}</a>
-                    </dt>
+                        <a href="#" class="avatar">{{ REQUEST_AUTHOR_AVATAR }}</a> 
+                    </div>
+                    
+                    <a href="#" style="color: #{{ REQUEST_AUTHOR_COLOR }};" class="username-coloured">{{ REQUEST_AUTHOR }}</a>
+                </dt>
+
+                <dd class="profile-rank">{{ REQUEST_AUTHOR_RANK }}</dd>
+                <dd class="profile-posts">Posts: {{ REQUEST_AUTHOR_POSTS }}</dd>
 
             </dl>
 
@@ -50,7 +52,7 @@
                             <i class="icon fa-file fa-fw icon-lightgray icon-md" aria-hidden="true"></i><span
                                 class="sr-only">Post</span>
                         </a>
-                        <span class="responsive-hide">by <strong><a href="./memberlist.php?mode=viewprofile&amp;u=2"
+                        <span class="responsive-hide">by <strong><a href="#"
                                     style="color: #{{ REQUEST_AUTHOR_COLOR }};" class="username-coloured">{{ REQUEST_AUTHOR}}</a></strong>
                     </p>
 
@@ -81,35 +83,35 @@
         <a href="#" class="button" title="Post a reply">
             <span>Post Reply</span> <i class="icon fa-reply fa-fw" aria-hidden="true"></i>
         </a>
-
-        <div class="quickmod dropdown-container dropdown-container-left dropdown-up dropdown-right dropdown-button-control"
-            id="quickmod">
-            <span title="Quick-mod tools"
-                class="button button-secondary dropdown-trigger dropdown-select dropdown-toggle">
-                <i class="icon fa-gavel fa-fw" aria-hidden="true"></i><span class="sr-only">Quick-mod tools</span>
-                <span class="caret"><i class="icon fa-sort-down fa-fw" aria-hidden="true"></i></span>
-            </span>
-            <div class="dropdown">
-                <div class="pointer">
-                    <div class="pointer-inner"></div>
-                </div>
-                <ul class="dropdown-contents">
-                    <li><a href="#">Example moderator action</a></li>
-                </ul>
-            </div>
-        </div>
     </div>
     {# BBCodes Form #}
 
     <!-- INCLUDEJS {T_ASSETS_PATH}/javascript/core.js -->
-    
-    <form id="postform" name="postform">
-        <!-- INCLUDE posting_buttons.html -->
-        <textarea name="message" id="message" data-bbcode="true" cols="30" rows="10"></textarea><br>
-        <input type="submit" class="button1 default-submit-action">
-    </form>
 
-    {# End BBCodes Form #}
-</div>
+    <div class="panel">
+        <div class="inner">
+            <h2> Your reply</h2>
+
+            <center>
+            <form id="postform" name="postform" method="post" action="{{ U_ACTION }}">
+            
+                {{ include('posting_buttons.html') }}
+                
+                <textarea name="message" id="message" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);" onfocus="initInsertions();" data-bbcode="true" rows="10"></textarea><br>
+                
+                <fieldset class="submit-buttons">
+                    <input type="submit" name="submit" id="submit" class="button1" value="{{ lang('SUBMIT') }}" tabindex="2" />&nbsp;
+                    {{ S_HIDDEN_FIELDS }}
+                    {{ S_FORM_TOKEN }}
+                </fieldset>
+      
+            </form>
+            </center>
+        
+            {# End BBCodes Form #}
+        </div>
+        </div>
+    </div>
+   
 
 {% include 'overall_footer.html' %}
