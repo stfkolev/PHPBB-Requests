@@ -48,6 +48,12 @@ class main_controller
 	/** @var string */
 	protected $root_path;
 
+	/** @var \phpbb\textformatter\s9e\parser */
+	protected $parser;
+
+	/** @var \phpbb\textformatter\s9e\renderer */
+	protected $renderer;
+
 	/**
 	 * Constructor
 	 *
@@ -62,6 +68,8 @@ class main_controller
      * @param string                        			$php_ext            phpEx 
 	 * @param \evilsystem\requests\table				$mods_table			String
 	 * @param \evilsystem\requests\table				$servers_table		String
+	 * @param \phpbb\textformatter\s9e\parser			$parser				Parser object
+	 * @param \phpbb\textformatter\s9e\renderer			$renderer			Renderer object
 	 * 
 	 */
 	public function __construct(
@@ -78,7 +86,10 @@ class main_controller
 		$php_ext,
 
 		$requests_table,
-		$replies_table
+		$replies_table,
+
+		\phpbb\textformatter\s9e\parser $parser,
+		\phpbb\textformatter\s9e\renderer $renderer
 	)
 	{
 		$this->config			= $config;
@@ -90,11 +101,14 @@ class main_controller
 		$this->db 				= $db;
 		$this->user				= $user;
 
-		$this->root_path = $root_path;
-		$this->php_ext = $php_ext;
+		$this->root_path 		= $root_path;
+		$this->php_ext 			= $php_ext;
 
 		$this->requests_table 	= $requests_table;
 		$this->replies_table	= $replies_table;
+
+		$this->parser 			= $parser;
+		$this->renderer			= $renderer;
 	}
 
 	/**
@@ -304,7 +318,7 @@ class main_controller
 						'REPLY_AUTHOR_AVATAR'			=> $authorAvatar,
 						'REPLY_AUTHOR_RANK'				=> $authorRank['img'] ?: $authorRank['title'],
 						'REPLY_AUTHOR_POSTS'			=> $author['user_posts'],
-						'REPLY_ADDITIONAL'				=> $row['replies_additional']
+						'REPLY_ADDITIONAL'				=> $this->renderer->render($row['replies_additional'])
 					));
 				}
 
@@ -351,7 +365,7 @@ class main_controller
 						$data = array(
 							'replies_user_id'		=> (int) $this->user->data['user_id'],
 							'replies_request_id'	=> (int) $name,
-							'replies_additional'	=> $this->request->variable('message', '')
+							'replies_additional'	=> $this->parser->parse($this->request->variable('message', ''))
 						);
 
 						$sql = 'INSERT INTO ' . $this->replies_table . ' ' . $this->db->sql_build_array('INSERT', $data);

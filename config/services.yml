@@ -16,6 +16,8 @@ services:
             - '%core.php_ext%'
             - '%evilsystem.requests.tables.evilsystem_requests_table%'
             - '%evilsystem.requests.tables.evilsystem_requests_replies%'
+            - '@text_formatter.parser'
+            - '@text_formatter.renderer'
 
     evilsystem.requests.controller.ucp:
         class: evilsystem\requests\controller\ucp_controller
