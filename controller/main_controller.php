@@ -279,10 +279,17 @@ class main_controller
 				]);
 				/*! End BBCode */
 
+				/*! Select user */
+				$data = array(
+					'requests_id'	=> $name,
+				);
+
+				$sql = 'SELECT requests_user_id FROM ' . $this->requests_table . ' WHERE ' . $this->db->sql_build_array('SELECT', $data);
+				$requestUserId = ( $this->db->sql_fetchrow($this->db->sql_query($sql)))['requests_user_id'];
 
 				/*! User requests count */
 				$data = array(
-					'requests_user_id'	=> $this->user->data['user_id'],
+					'requests_user_id'	=> $requestUserId,
 				);
 
 				$sql = ' SELECT COUNT(*) as requests_made FROM ' . $this->requests_table . ' WHERE ' . $this->db->sql_build_array('SELECT', $data);
@@ -290,7 +297,7 @@ class main_controller
 
 				/*! User replies count */
 				$data = array(
-					'replies_user_id'	=> $this->user->data['user_id'],
+					'replies_user_id'	=> $requestUserId,
 				);
 
 				$sql = ' SELECT COUNT(*) as replies_made FROM ' . $this->replies_table . ' WHERE ' . $this->db->sql_build_array('SELECT', $data);
