@@ -26,6 +26,7 @@ class main_listener implements EventSubscriberInterface
 			'core.user_setup'							=> 'load_language_on_setup',
 			'core.page_header'							=> 'add_page_header_link',
 			'core.viewonline_overwrite_location'		=> 'viewonline_page',
+			'core.permissions'							=> 'permissions_add_option',
 		);
 	}
 
@@ -95,4 +96,33 @@ class main_listener implements EventSubscriberInterface
 			$event['location_url'] = $this->helper->route('evilsystem_requests_controller', array('name' => 'all'));
 		}
 	}
+
+
+	/**
+	 * Add option to the permissions
+	 */
+
+	 public function permissions_add_option($event) {
+		 
+		 $prevEvent = $event['permissions'];
+		 
+		 array_push($prevEvent, array(
+			 'm_requests'	=> array(
+				'lang' => 'ACL_M_NEW_EVILSYSTEM_REQUESTS',
+				'cat'	=> 'misc'
+			 ),
+
+			 'a_requests'	=> array(
+				'lang' => 'ACL_M_NEW_EVILSYSTEM_REQUESTS',
+				'cat'	=> 'misc'
+			 ),
+
+			 'u_requests'	=> array(
+				'lang' => 'ACL_M_NEW_EVILSYSTEM_REQUESTS',
+				'cat'	=> 'misc'
+			 ),
+		 ));
+		 
+		 $event['permissions'] = $prevEvent;
+	 }
 }
