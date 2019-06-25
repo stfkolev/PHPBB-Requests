@@ -333,7 +333,8 @@ class main_controller
 					'REQUEST_ADDITIONAL'		=> $request['requests_additional'],
 					'REQUEST_WIDTH'				=> $request['requests_width'],
 					'REQUEST_HEIGHT'			=> $request['requests_height'],
-					'REQUEST_STATUS'			=> $request['requests_status']
+					'REQUEST_STATUS'			=> $request['requests_status'],
+					'REQUEST_IS_AUTHOR'			=> $author['user_id'] == $this->user->data['user_id'],
 				));
 
 				/*! If is user registered */	

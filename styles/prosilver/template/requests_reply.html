@@ -32,21 +32,6 @@
 
                     <h3 class="first"><a href="#p4">{{ REQUEST_TITLE }}</a></h3>
 
-                    <ul class="post-buttons">
-                        <li>
-                            <a href="#" title="Accept" class="button button-icon-only">
-                                <i class="icon fa-check fa-fw" aria-hidden="true"></i><span
-                                    class="sr-only">Accept</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" title="Refuse" class="button button-icon-only">
-                                <i class="icon fa-times fa-fw" aria-hidden="true"></i><span
-                                    class="sr-only">Refuse</span>
-                            </a>
-                        </li>
-                    </ul>
-
                     <p class="author">
                         <a class="unread" href="#" title="Post">
                             <i class="icon fa-file fa-fw icon-lightgray icon-md" aria-hidden="true"></i><span
@@ -97,10 +82,23 @@
                 <div id="post_content1">
 
                     <h3 class="first"><a href="#">{{ REQUEST_TITLE }}</a></h3>
-
+                    
+                    <!-- IF REQUEST_IS_AUTHOR -->
                     <ul class="post-buttons">
-                        
+                        <li>
+                            <a href="#" title="Accept" class="button button-icon-only">
+                                <i class="icon fa-check fa-fw" aria-hidden="true"></i><span
+                                    class="sr-only">Accept</span>
+                            </a>
+                        </li>
+                        {# <li>
+                            <a href="#" title="Refuse" class="button button-icon-only">
+                                <i class="icon fa-times fa-fw" aria-hidden="true"></i><span
+                                    class="sr-only">Refuse</span>
+                            </a>
+                        </li> #}
                     </ul>
+                    <!-- ENDIF -->
 
                     <p class="author">
                         <a class="unread" href="./viewtopic.php?p=1#p1" title="Post">
