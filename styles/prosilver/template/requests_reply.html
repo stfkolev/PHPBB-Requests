@@ -22,7 +22,9 @@
                 </dt>
 
                 <dd class="profile-rank">{{ REQUEST_AUTHOR_RANK }}</dd>
-                <dd class="profile-posts">Posts: {{ REQUEST_AUTHOR_POSTS }}</dd>
+                <dd class="profile-posts"><strong>Posts:</strong> {{ REQUEST_AUTHOR_POSTS }}</dd>
+                <dd><strong>Requests Made:</strong> {{ REQUEST_AUTHOR_REQUESTSMADE }}</dd>
+                <dd><strong>Replies Made:</strong> {{ REQUEST_AUTHOR_REPLIESMADE }}</dd>
 
             </dl>
 
@@ -72,8 +74,10 @@
                 </dt>
 
                 <dd class="profile-rank">{{ reply.REPLY_AUTHOR_RANK }}</dd>
-                <dd class="profile-posts"><strong>Posts:</strong> {{ reply.REPLY_AUTHOR_POSTS }}
-                </dd>
+                <dd class="profile-posts"><strong>Posts:</strong> {{ reply.REPLY_AUTHOR_POSTS }}</dd>
+
+                <dd><strong>Requests Made:</strong> {{ reply.REPLY_AUTHOR_REQUESTSMADE }}</dd>
+                <dd><strong>Replies Made:</strong> {{ reply.REPLY_AUTHOR_REPLIESMADE }}</dd>
 
             </dl>
 

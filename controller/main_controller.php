@@ -279,6 +279,25 @@ class main_controller
 				]);
 				/*! End BBCode */
 
+
+				/*! User requests count */
+				$data = array(
+					'requests_user_id'	=> $this->user->data['user_id'],
+				);
+
+				$sql = ' SELECT COUNT(*) as requests_made FROM ' . $this->requests_table . ' WHERE ' . $this->db->sql_build_array('SELECT', $data);
+				$requests_made = ($this->db->sql_fetchrow($this->db->sql_query($sql)))['requests_made'];
+
+				/*! User replies count */
+				$data = array(
+					'replies_user_id'	=> $this->user->data['user_id'],
+				);
+
+				$sql = ' SELECT COUNT(*) as replies_made FROM ' . $this->replies_table . ' WHERE ' . $this->db->sql_build_array('SELECT', $data);
+				$replies_made = ($this->db->sql_fetchrow($this->db->sql_query($sql)))['replies_made'];
+
+				var_dump($replies_made);
+
 				/*! Data to search by */
 				$data = array(
 					'requests_id'	=> $name,
@@ -308,16 +327,33 @@ class main_controller
 				/*! Create a block of vars of type replies */
 				while($row = $this->db->sql_fetchrow($result)) {
 
+					
 					$find = array(
 						'user_id'	=> $row['replies_user_id']
 					);
-
+					
 					/*! Find Author of reply */
 					$sql = 'SELECT * FROM ' . USERS_TABLE . ' WHERE ' . $this->db->sql_build_array('SELECT', $find);
 					$author = $this->db->sql_fetchrow($this->db->sql_query($sql));
 					$authorAvatar = get_user_avatar($author['user_avatar'], $author['user_avatar_type'], $author['user_avatar_width'], $author['user_avatar_height']);
 					$authorRank = phpbb_get_user_rank($author, $author['user_posts']);
 					
+					/*! User requests count */
+					$data = array(
+						'requests_user_id'	=> $author['user_id'],
+					);
+
+					$sql = ' SELECT COUNT(*) as requests_made FROM ' . $this->requests_table . ' WHERE ' . $this->db->sql_build_array('SELECT', $data);
+					$authorRequestsMade = ($this->db->sql_fetchrow($this->db->sql_query($sql)))['requests_made'];
+
+					/*! User replies count */
+					$data = array(
+						'replies_user_id'	=> $author['user_id'],
+					);
+
+					$sql = ' SELECT COUNT(*) as replies_made FROM ' . $this->replies_table . ' WHERE ' . $this->db->sql_build_array('SELECT', $data);
+					$authorRepliesMade = ($this->db->sql_fetchrow($this->db->sql_query($sql)))['replies_made'];
+
 					/*! Assign block of variables */
 					$this->template->assign_block_vars('reply', array(
 						'REPLY_AUTHOR'					=> $author['username'],
@@ -325,6 +361,8 @@ class main_controller
 						'REPLY_AUTHOR_AVATAR'			=> $authorAvatar,
 						'REPLY_AUTHOR_RANK'				=> $authorRank['img'] ?: $authorRank['title'],
 						'REPLY_AUTHOR_POSTS'			=> $author['user_posts'],
+						'REPLY_AUTHOR_REQUESTSMADE'		=> $authorRequestsMade,
+						'REPLY_AUTHOR_REPLIESMADE'		=> $authorRepliesMade,
 						'REPLY_ADDITIONAL'				=> $this->renderer->render($row['replies_additional']),
 						'REPLY_STATUS'					=> $row['replies_status'],
 						'REPLY_URL'						=> $this->user->page['root_script_path'] . strstr($this->user->page['page_name'], 'r') . '/' . $row['replies_id']  . '/approve',
@@ -344,20 +382,22 @@ class main_controller
 				
 				/*! Assing basic variables */
 				$this->template->assign_vars(array(
-					'REQUEST_ID'				=> $request['requests_id'],
-					'REQUEST_AUTHOR'			=> $author['username'],
-					'REQUEST_AUTHOR_COLOR'		=> $author['user_colour'],
-					'REQUEST_AUTHOR_AVATAR'		=> $authorAvatar,
-					'REQUEST_AUTHOR_RANK'		=> $authorRank['img'] ?: $authorRank['title'],
-					'REQUEST_AUTHOR_POSTS'		=> $author['user_posts'],
-					'REQUEST_TITLE'				=> $request['requests_title'],
-					'REQUEST_TYPE'				=> $request['requests_type'],
-					'REQUEST_ADDITIONAL'		=> $request['requests_additional'],
-					'REQUEST_WIDTH'				=> $request['requests_width'],
-					'REQUEST_HEIGHT'			=> $request['requests_height'],
-					'REQUEST_STATUS'			=> $request['requests_status'],
-					'REQUEST_IS_AUTHOR'			=> $author['user_id'] == $this->user->data['user_id'],
-					'REQUEST_IS_APPROVED'		=> $request['requests_status'] == 2,
+					'REQUEST_ID'						=> $request['requests_id'],
+					'REQUEST_AUTHOR'					=> $author['username'],
+					'REQUEST_AUTHOR_REPLIESMADE'		=> $replies_made,
+					'REQUEST_AUTHOR_REQUESTSMADE'		=> $requests_made,
+					'REQUEST_AUTHOR_COLOR'				=> $author['user_colour'],
+					'REQUEST_AUTHOR_AVATAR'				=> $authorAvatar,
+					'REQUEST_AUTHOR_RANK'				=> $authorRank['img'] ?: $authorRank['title'],
+					'REQUEST_AUTHOR_POSTS'				=> $author['user_posts'],
+					'REQUEST_TITLE'						=> $request['requests_title'],
+					'REQUEST_TYPE'						=> $request['requests_type'],
+					'REQUEST_ADDITIONAL'				=> $request['requests_additional'],
+					'REQUEST_WIDTH'						=> $request['requests_width'],
+					'REQUEST_HEIGHT'					=> $request['requests_height'],
+					'REQUEST_STATUS'					=> $request['requests_status'],
+					'REQUEST_IS_AUTHOR'					=> $author['user_id'] == $this->user->data['user_id'],
+					'REQUEST_IS_APPROVED'				=> $request['requests_status'] == 2,
 				));
 
 				/*! If is user registered */	
