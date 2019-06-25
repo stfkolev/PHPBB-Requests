@@ -1,14 +1,6 @@
 {% include 'overall_header.html' %}
 
 <div id="page-body" class="page-body" role="main">
-
-    <div class="action-bar bar-top">
-
-        <a href="#" class="button" title="Post a reply">
-            <span>Post Reply</span> <i class="icon fa-reply fa-fw" aria-hidden="true"></i>
-        </a>
-    </div>
-
     <div id="p4" class="post has-profile bg2">
         <div class="inner">
 
@@ -101,7 +93,7 @@
                     <!-- ENDIF -->
 
                     <p class="author">
-                        <a class="unread" href="./viewtopic.php?p=1#p1" title="Post">
+                        <a class="unread" href="#" title="Post">
                             <i class="icon fa-file fa-fw icon-lightgray icon-md" aria-hidden="true"></i><span
                                 class="sr-only">Post</span>
                         </a>
@@ -112,10 +104,6 @@
 
 
                     <div class="content">{{ reply.REPLY_ADDITIONAL }}</div>
-
-
-
-
 
                 </div>
 
@@ -134,13 +122,6 @@
 
     <hr class="divider">
 
-
-    <div class="action-bar bar-bottom">
-
-        <a href="#" class="button" title="Post a reply">
-            <span>Post Reply</span> <i class="icon fa-reply fa-fw" aria-hidden="true"></i>
-        </a>
-    </div>
     {# BBCodes Form #}
 
     <!-- INCLUDEJS {T_ASSETS_PATH}/javascript/core.js -->
