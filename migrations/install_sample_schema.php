@@ -65,6 +65,7 @@ class install_sample_schema extends \phpbb\db\migration\migration
 						'replies_user_id'		=> array('UINT', null),
 
 						'replies_additional'	=> array('TEXT', ''),
+						'replies_status'		=> array('UINT', null),
 					),
 					'PRIMARY_KEY'	=> 'replies_id',
 				),
@@ -97,7 +98,7 @@ class install_sample_schema extends \phpbb\db\migration\migration
 		return array(
 			'drop_tables'		=> array(
 				$this->table_prefix . 'evilsystem_requests_table',
-				$this->table_rpefix . 'evilsystem_requests_replies',
+				$this->table_prefix . 'evilsystem_requests_replies',
 			),
 		);
 	}

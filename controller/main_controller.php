@@ -121,6 +121,7 @@ class main_controller
 	public function handle($name)
 	{
 		$renderer = null;
+
 		switch($name) {
 			case 'all': {
 
@@ -257,7 +258,6 @@ class main_controller
 				break;
 			}
 			case $name: {
-				
 				/*! BBCode */
 				require_once $this->root_path . 'includes/functions_display.' . $this->php_ext;
 				require_once $this->root_path . 'includes/functions_posting.' . $this->php_ext;
@@ -289,13 +289,20 @@ class main_controller
 
 				$request = $this->db->sql_fetchrow($this->db->sql_query($sql));
 
+				if(!$request) {
+					/*! Redirect after 3 seconds if no action is taken */
+					meta_refresh(3, $this->helper->route('evilsystem_requests_controller', array('name' => 'all')));
+					$message = $this->language->lang('REQUESTS_NOT_FOUND') . '<br /><br />' . $this->language->lang('REQUESTS_RETURN', '<a href="' . $this->helper->route('evilsystem_requests_controller', array('name' => 'all')) . '">', '</a>');
+					trigger_error($message);
+				}
+
 				/*! Replies */
 				$data = array(
 					'replies_request_id'	=> $name,
 				);
 
 				/*! Get All replies for the current Request */
-				$sql = 'SELECT * FROM ' . $this->replies_table . ' WHERE ' . $this->db->sql_build_array('SELECT', $data);
+				$sql = 'SELECT * FROM ' . $this->replies_table . ' WHERE ' . $this->db->sql_build_array('SELECT', $data) . ' ORDER BY replies_status DESC';
 				$result = $this->db->sql_query($sql);
 				
 				/*! Create a block of vars of type replies */
@@ -310,15 +317,17 @@ class main_controller
 					$author = $this->db->sql_fetchrow($this->db->sql_query($sql));
 					$authorAvatar = get_user_avatar($author['user_avatar'], $author['user_avatar_type'], $author['user_avatar_width'], $author['user_avatar_height']);
 					$authorRank = phpbb_get_user_rank($author, $author['user_posts']);
-
+					
 					/*! Assign block of variables */
 					$this->template->assign_block_vars('reply', array(
 						'REPLY_AUTHOR'					=> $author['username'],
-						'REPLY_AUTHOR_COLOUR'			=> $author['user_colour'],
+						'REPLY_AUTHOR_COLOR'			=> $author['user_colour'],
 						'REPLY_AUTHOR_AVATAR'			=> $authorAvatar,
 						'REPLY_AUTHOR_RANK'				=> $authorRank['img'] ?: $authorRank['title'],
 						'REPLY_AUTHOR_POSTS'			=> $author['user_posts'],
-						'REPLY_ADDITIONAL'				=> $this->renderer->render($row['replies_additional'])
+						'REPLY_ADDITIONAL'				=> $this->renderer->render($row['replies_additional']),
+						'REPLY_STATUS'					=> $row['replies_status'],
+						'REPLY_URL'						=> $this->user->page['root_script_path'] . strstr($this->user->page['page_name'], 'r') . '/' . $row['replies_id']  . '/approve',
 					));
 				}
 
@@ -333,7 +342,6 @@ class main_controller
 				$authorAvatar = get_user_avatar($author['user_avatar'], $author['user_avatar_type'], $author['user_avatar_width'], $author['user_avatar_height']);
 				$authorRank = phpbb_get_user_rank($author, $author['user_posts']);
 				
-
 				/*! Assing basic variables */
 				$this->template->assign_vars(array(
 					'REQUEST_ID'				=> $request['requests_id'],
@@ -349,6 +357,7 @@ class main_controller
 					'REQUEST_HEIGHT'			=> $request['requests_height'],
 					'REQUEST_STATUS'			=> $request['requests_status'],
 					'REQUEST_IS_AUTHOR'			=> $author['user_id'] == $this->user->data['user_id'],
+					'REQUEST_IS_APPROVED'		=> $request['requests_status'] == 2,
 				));
 
 				/*! If is user registered */	
@@ -387,5 +396,29 @@ class main_controller
 		}
 
 		return $renderer;
+	}
+
+	public function approve($name, $id) {
+		$data = array(
+			'replies_status' => 1,
+		);
+
+		/*! Update Replies table */
+		$sql = 'UPDATE ' . $this->replies_table . ' SET ' . $this->db->sql_build_array('UPDATE', $data) . ' WHERE ' . $this->db->sql_in_set('replies_id', $id);
+		$this->db->sql_query($sql); 	
+
+		$data = array(
+			'requests_status'	=> 2,
+		);
+
+		$sql = 'UPDATE ' . $this->requests_table . ' SET ' . $this->db->sql_build_array('UPDATE', $data) . ' WHERE ' . $this->db->sql_in_set('requests_id', $name);
+		$this->db->sql_query($sql);
+
+		/*! Redirect after 3 seconds if no action is taken */
+		meta_refresh(3, $this->helper->route('evilsystem_requests_controller', array('name' => $name)));
+		$message = $this->language->lang('REQUESTS_APPROVED') . '<br /><br />' . $this->language->lang('REQUESTS_APPROVED_RETURN', '<a href="' . $this->helper->route('evilsystem_requests_controller', array('name' => $name)) . '">', '</a>');
+		trigger_error($message);
+		
+		return $this->helper->render('requests_reply.html', $name);
 	}
 }

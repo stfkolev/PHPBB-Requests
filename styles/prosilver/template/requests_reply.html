@@ -1,5 +1,12 @@
 {% include 'overall_header.html' %}
 
+<style>
+
+    .bg-green {
+        background-color: #e0fcc4;
+    }
+</style>
+
 <div id="page-body" class="page-body" role="main">
     <div id="p4" class="post has-profile bg2">
         <div class="inner">
@@ -53,7 +60,7 @@
     </div>
 
     <!-- BEGIN reply -->
-    <div class="post has-profile bg2">
+    <div class="post has-profile bg2 {% if reply.REPLY_STATUS eq 1 %} bg-green{% endif %}">
         <div class="inner">
 
             <dl class="postprofile" id="profile1">
@@ -75,13 +82,15 @@
 
                     <h3 class="first"><a href="#">{{ REQUEST_TITLE }}</a></h3>
                     
-                    <!-- IF REQUEST_IS_AUTHOR -->
+                    <!-- IF REQUEST_IS_AUTHOR and not REQUEST_IS_APPROVED -->
                     <ul class="post-buttons">
                         <li>
-                            <a href="#" title="Accept" class="button button-icon-only">
-                                <i class="icon fa-check fa-fw" aria-hidden="true"></i><span
-                                    class="sr-only">Accept</span>
-                            </a>
+                            <form method="post" name="approveRequest" id="approveRequest" action="{{ reply.REPLY_URL }}">
+                                <button type="submit" title="Approve" class="button button-icon-only">
+                                    <i class="icon fa-check fa-fw" aria-hidden="true"></i><span
+                                        class="sr-only">Approve</span>
+                                    </button>
+                            </form>
                         </li>
                         {# <li>
                             <a href="#" title="Refuse" class="button button-icon-only">
@@ -126,12 +135,12 @@
 
     <!-- INCLUDEJS {T_ASSETS_PATH}/javascript/core.js -->
 
+    <!-- IF not REQUEST_IS_APPROVED and not REQUEST_IS_AUTHOR -->
     <div class="panel">
         <div class="inner">
             <h2> Your reply</h2>
-
             <center>
-                <form id="postform" name="postform" method="post" action="{{ U_ACTION }}">
+                <form id="postform" name="postform" method="post">
 
                     {{ include('posting_buttons.html') }}
 
@@ -148,10 +157,10 @@
 
                 </form>
             </center>
-
             {# End BBCodes Form #}
         </div>
     </div>
+    <!-- ENDIF -->
 </div>
 
 

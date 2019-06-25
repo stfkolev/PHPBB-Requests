@@ -54,6 +54,9 @@ $lang = array_merge($lang, array(
 	'REQUESTS_PAGINATION'						=> 'Page <strong>%d</strong> of <strong>%d</strong>',
 	'REQUESTS_REQUEST_ADDED'					=> 'Your request has been added to our database successfully!',
 	'REQUESTS_RETURN'							=> '%sReturn to all requests%s',
+	'REQUESTS_APPROVED'							=> 'You approved the reply!',
+	'REQUESTS_APPROVED_RETURN'					=> '%sReturn to the request%s',
+	'REQUESTS_NOT_FOUND'						=> 'Could not find this request!',
 
 	/*! Requests Table (Main Page) */
 	'REQUESTS_TABLE_TITLE'						=> 'Title',

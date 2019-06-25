@@ -1,3 +1,15 @@
 evilsystem_requests_controller:
     path: /requests/{name}
     defaults: { _controller: evilsystem.requests.controller.main:handle }
+
+reply_approve:
+    path: /requests/{name}/{id}/approve
+    defaults: { _controller: evilsystem.requests.controller.main:approve }
+    requirements:
+        id: \d+
+
+# evilsystem_replies_controller:
+#     path: /requests/{id}/{name}
+#     defaults: { _controller: evilsystem.requests.controller.main:actions }
+#     requirements:
+#         id: \d+
