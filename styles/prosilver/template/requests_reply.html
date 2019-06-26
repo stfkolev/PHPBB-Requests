@@ -23,8 +23,8 @@
 
                 <dd class="profile-rank">{{ REQUEST_AUTHOR_RANK }}</dd>
                 <dd class="profile-posts"><strong>Posts:</strong> {{ REQUEST_AUTHOR_POSTS }}</dd>
-                <dd><strong>Requests Made:</strong> {{ REQUEST_AUTHOR_REQUESTSMADE }}</dd>
-                <dd><strong>Replies Made:</strong> {{ REQUEST_AUTHOR_REPLIESMADE }}</dd>
+                <dd><strong>{{ lang('REQUESTS_REQ_MADE') ~ lang('COLON') }}</strong> {{ REQUEST_AUTHOR_REQUESTSMADE }}</dd>
+                <dd><strong>{{ lang('REQUESTS_REPL_MADE') ~ lang('COLON') }}</strong> {{ REQUEST_AUTHOR_REPLIESMADE }}</dd>
 
             </dl>
 
@@ -36,7 +36,7 @@
                     <p class="author">
                         <a class="unread" href="#" title="Post">
                             <i class="icon fa-file fa-fw icon-lightgray icon-md" aria-hidden="true"></i><span
-                                class="sr-only">Post</span>
+                                class="sr-only">Request</span>
                         </a>
                         <span class="responsive-hide">by <strong><a href="#" style="color: #{{ REQUEST_AUTHOR_COLOR }};"
                                     class="username-coloured">{{ REQUEST_AUTHOR}}</a></strong>
@@ -45,7 +45,16 @@
 
 
                     <div class="content">
+                        <strong>{{ lang('REQUESTS_VIEW_TYPE') ~ lang('COLON') }} </strong> {{ REQUEST_TYPE }} </b><br>
+                       
+                        <br>
 
+                        <strong>{{ lang('REQUESTS_VIEW_WIDTH') ~ lang('COLON') }} </strong> {{ REQUEST_WIDTH }} <br>
+                        <strong>{{ lang('REQUESTS_VIEW_HEIGHT') ~ lang('COLON') }} </strong>{{ REQUEST_HEIGHT }} <br>
+
+                        <br>
+
+                        <strong>{{ lang('REQUESTS_VIEW_ADDITIONAL') ~ lang('COLON') }} </strong><br>{{ REQUEST_ADDITIONAL }} <br>
                     </div>
                 </div>
 
@@ -92,7 +101,7 @@
                             <form method="post" name="approveRequest" id="approveRequest" action="{{ reply.REPLY_URL }}">
                                 <button type="submit" title="Approve" class="button button-icon-only">
                                     <i class="icon fa-check fa-fw" aria-hidden="true"></i><span
-                                        class="sr-only">Approve</span>
+                                        class="sr-only">{{ lang('REQUESTS_APPROVE') }}</span>
                                     </button>
                             </form>
                         </li>
@@ -106,9 +115,9 @@
                     <!-- ENDIF -->
 
                     <p class="author">
-                        <a class="unread" href="#" title="Post">
+                        <a class="unread" href="#" title="Request">
                             <i class="icon fa-file fa-fw icon-lightgray icon-md" aria-hidden="true"></i><span
-                                class="sr-only">Post</span>
+                                class="sr-only">Request</span>
                         </a>
                         <span class="responsive-hide">by <strong><a href="#"
                                     style="color: #{{ reply.REPLY_AUTHOR_COLOR }};" class="username-coloured">{{ reply.REPLY_AUTHOR }}</a></strong>

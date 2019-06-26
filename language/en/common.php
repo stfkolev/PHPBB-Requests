@@ -57,6 +57,10 @@ $lang = array_merge($lang, array(
 	'REQUESTS_APPROVED'							=> 'You approved the reply!',
 	'REQUESTS_APPROVED_RETURN'					=> '%sReturn to the request%s',
 	'REQUESTS_NOT_FOUND'						=> 'Could not find this request!',
+	'REQUESTS_REQ_MADE'							=> 'Requests',
+	'REQUESTS_REPL_MADE'						=> 'Replies',
+	'REQUESTS_POSTS_MADE'						=> 'Posts',
+	'REQUESTS_APPROVE'							=> 'Approve',
 
 	/*! Requests Table (Main Page) */
 	'REQUESTS_TABLE_TITLE'						=> 'Title',
@@ -76,5 +80,11 @@ $lang = array_merge($lang, array(
 	'REQUESTS_FORM_HEIGHT_DESC'					=> 'The height of the artwork (min. 0, max. 8192)',
 	'REQUESTS_FORM_ADDITIONAL'					=> 'Additional',
 	'REQUESTS_FORM_ADDITIONAL_DESC'				=> 'If you want to add something like topic, animations, here is the place',
+
+	/*! Requests Reply (View Request) */
+	'REQUESTS_VIEW_TYPE'						=> 'Type of the request',
+	'REQUESTS_VIEW_WIDTH'						=> 'Width of the artwork',
+	'REQUESTS_VIEW_HEIGHT'						=> 'Height of the artwork',
+	'REQUESTS_VIEW_ADDITIONAL'					=> 'Additional information',
 
 ));

@@ -303,8 +303,6 @@ class main_controller
 				$sql = ' SELECT COUNT(*) as replies_made FROM ' . $this->replies_table . ' WHERE ' . $this->db->sql_build_array('SELECT', $data);
 				$replies_made = ($this->db->sql_fetchrow($this->db->sql_query($sql)))['replies_made'];
 
-				var_dump($replies_made);
-
 				/*! Data to search by */
 				$data = array(
 					'requests_id'	=> $name,
@@ -416,7 +414,6 @@ class main_controller
 					
 					/*! Check if request is post */
 					if($this->request->is_set_post('submit')) {
-						var_dump($this->request->variable('message', ''));
 						
 						$data = array(
 							'replies_user_id'		=> (int) $this->user->data['user_id'],
