@@ -362,6 +362,7 @@ class main_controller
 					/*! Assign block of variables */
 					$this->template->assign_block_vars('reply', array(
 						'REPLY_AUTHOR'					=> $author['username'],
+						'REPLY_AUTHOR_ID'				=> $author['user_id'],
 						'REPLY_AUTHOR_COLOR'			=> $author['user_colour'],
 						'REPLY_AUTHOR_AVATAR'			=> $authorAvatar,
 						'REPLY_AUTHOR_RANK'				=> $authorRank['img'] ?: $authorRank['title'],
@@ -389,6 +390,7 @@ class main_controller
 				$this->template->assign_vars(array(
 					'REQUEST_ID'						=> $request['requests_id'],
 					'REQUEST_AUTHOR'					=> $author['username'],
+					'REQUEST_AUTHOR_ID'					=> $author['user_id'],
 					'REQUEST_AUTHOR_REPLIESMADE'		=> $replies_made,
 					'REQUEST_AUTHOR_REQUESTSMADE'		=> $requests_made,
 					'REQUEST_AUTHOR_COLOR'				=> $author['user_colour'],

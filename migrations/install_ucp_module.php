@@ -14,15 +14,16 @@ class install_ucp_module extends \phpbb\db\migration\migration
 {
 	public function effectively_installed()
 	{
-		$sql = 'SELECT module_id
-			FROM ' . $this->table_prefix . "modules
-			WHERE module_class = 'ucp'
-				AND module_langname = 'UCP_REQUESTS_TITLE'";
-		$result = $this->db->sql_query($sql);
-		$module_id = $this->db->sql_fetchfield('module_id');
-		$this->db->sql_freeresult($result);
+		// $sql = 'SELECT module_id
+		// 	FROM ' . $this->table_prefix . "modules
+		// 	WHERE module_class = 'ucp'
+		// 		AND module_langname = 'UCP_REQUESTS_TITLE'";
+		// $result = $this->db->sql_query($sql);
+		// $module_id = $this->db->sql_fetchfield('module_id');
+		// $this->db->sql_freeresult($result);
 
-		return $module_id !== false;
+		// return $module_id !== false;
+		return true;
 	}
 
 	public static function depends_on()
@@ -32,20 +33,20 @@ class install_ucp_module extends \phpbb\db\migration\migration
 
 	public function update_data()
 	{
-		return array(
-			array('module.add', array(
-				'ucp',
-				0,
-				'UCP_REQUESTS_TITLE'
-			)),
-			array('module.add', array(
-				'ucp',
-				'UCP_REQUESTS_TITLE',
-				array(
-					'module_basename'	=> '\evilsystem\requests\ucp\main_module',
-					'modes'				=> array('settings'),
-				),
-			)),
-		);
+		// return array(
+		// 	array('module.add', array(
+		// 		'ucp',
+		// 		0,
+		// 		'UCP_REQUESTS_TITLE'
+		// 	)),
+		// 	array('module.add', array(
+		// 		'ucp',
+		// 		'UCP_REQUESTS_TITLE',
+		// 		array(
+		// 			'module_basename'	=> '\evilsystem\requests\ucp\main_module',
+		// 			'modes'				=> array('settings'),
+		// 		),
+		// 	)),
+		// );
 	}
 }

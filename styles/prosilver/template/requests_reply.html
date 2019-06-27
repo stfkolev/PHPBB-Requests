@@ -14,15 +14,15 @@
             <dl class="postprofile" id="profile4">
                 <dt class="has-profile-rank has-avatar">
                     <div class="avatar-container">
-                        <a href="#" class="avatar">{{ REQUEST_AUTHOR_AVATAR }}</a>
+                        <a href="../memberlist.php?mode=viewprofile&u={{ REQUEST_AUTHOR_ID }}" class="avatar">{{ REQUEST_AUTHOR_AVATAR }}</a>
                     </div>
 
-                    <a href="#" style="color: #{{ REQUEST_AUTHOR_COLOR }};"
+                    <a href="../memberlist.php?mode=viewprofile&u={{ REQUEST_AUTHOR_ID }}" style="color: #{{ REQUEST_AUTHOR_COLOR }};"
                         class="username-coloured">{{ REQUEST_AUTHOR }}</a>
                 </dt>
 
                 <dd class="profile-rank">{{ REQUEST_AUTHOR_RANK }}</dd>
-                <dd class="profile-posts"><strong>Posts:</strong> {{ REQUEST_AUTHOR_POSTS }}</dd>
+                <dd class="profile-posts"><strong>{{ lang('REQUESTS_POSTS_MADE') ~ lang('COLON') }}</strong> {{ REQUEST_AUTHOR_POSTS }}</dd>
                 <dd><strong>{{ lang('REQUESTS_REQ_MADE') ~ lang('COLON') }}</strong> {{ REQUEST_AUTHOR_REQUESTSMADE }}</dd>
                 <dd><strong>{{ lang('REQUESTS_REPL_MADE') ~ lang('COLON') }}</strong> {{ REQUEST_AUTHOR_REPLIESMADE }}</dd>
 
@@ -77,16 +77,16 @@
             <dl class="postprofile" id="profile1">
                 <dt class="has-profile-rank has-avatar">
                     <div class="avatar-container">
-                        <a href="#" class="avatar">{{ reply.REPLY_AUTHOR_AVATAR }}</a> </div>
-                    <a href="#" style="color: #{{ reply.REPLY_AUTHOR_COLOR }};"
+                        <a href="../memberlist.php?mode=viewprofile&u={{ reply.REPLY_AUTHOR_ID }}" class="avatar">{{ reply.REPLY_AUTHOR_AVATAR }}</a> </div>
+                        <a href="../memberlist.php?mode=viewprofile&u={{ reply.REPLY_AUTHOR_ID }}" style="color: #{{ reply.REPLY_AUTHOR_COLOR }};"
                         class="username-coloured">{{ reply.REPLY_AUTHOR}}</a>
                 </dt>
 
                 <dd class="profile-rank">{{ reply.REPLY_AUTHOR_RANK }}</dd>
-                <dd class="profile-posts"><strong>Posts:</strong> {{ reply.REPLY_AUTHOR_POSTS }}</dd>
+                <dd class="profile-posts"><strong>{{ lang('REQUESTS_POSTS_MADE') ~ lang('COLON') }}</strong> {{ reply.REPLY_AUTHOR_POSTS }}</dd>
 
-                <dd><strong>Requests Made:</strong> {{ reply.REPLY_AUTHOR_REQUESTSMADE }}</dd>
-                <dd><strong>Replies Made:</strong> {{ reply.REPLY_AUTHOR_REPLIESMADE }}</dd>
+                <dd><strong>{{ lang('REQUESTS_REQ_MADE') ~ lang('COLON') }}</strong> {{ reply.REPLY_AUTHOR_REQUESTSMADE }}</dd>
+                <dd><strong>{{ lang('REQUESTS_REPL_MADE') ~ lang('COLON') }}</strong> {{ reply.REPLY_AUTHOR_REPLIESMADE }}</dd>
 
             </dl>
 
