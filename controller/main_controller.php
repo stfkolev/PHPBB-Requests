@@ -219,12 +219,12 @@ class main_controller
 
 							/*! Prepare Data */
 							$data = array(
-								'requests_title' 			=> $this->request->variable('title', ''),
-								'requests_type' 			=> $this->request->variable('type', ''),
+								'requests_title' 			=> $this->request->variable('title', '', true),
+								'requests_type' 			=> $this->request->variable('type', '', true),
 								'requests_user_id'			=> $this->user->data['user_id'],
 								'requests_width'			=> $this->request->variable('width', 0),
 								'requests_height'			=> $this->request->variable('height', 0),
-								'requests_additional'		=> $this->request->variable('additional', ''),
+								'requests_additional'		=> $this->request->variable('additional', '', true),
 								'requests_status'			=> 0,
 							);
 
@@ -418,7 +418,7 @@ class main_controller
 						$data = array(
 							'replies_user_id'		=> (int) $this->user->data['user_id'],
 							'replies_request_id'	=> (int) $name,
-							'replies_additional'	=> $this->parser->parse($this->request->variable('message', ''))
+							'replies_additional'	=> $this->parser->parse($this->request->variable('message', '', true))
 						);
 
 						$sql = 'INSERT INTO ' . $this->replies_table . ' ' . $this->db->sql_build_array('INSERT', $data);
