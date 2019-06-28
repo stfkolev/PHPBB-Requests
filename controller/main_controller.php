@@ -124,7 +124,6 @@ class main_controller
 
 		switch($name) {
 			case 'all': {
-
 				/*! Requests Counter */
 				$counter = 0;
 

@@ -28,7 +28,7 @@ if (empty($lang) || !is_array($lang))
 //
 // You do not need this where single placeholders are used, e.g. 'Message %d' is fine
 // equally where a string contains only two placeholders which are used to wrap text
-// in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
+// in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is finen
 //
 // Some characters you may want to copy&paste:
 // ’ » “ ” …
@@ -36,4 +36,6 @@ if (empty($lang) || !is_array($lang))
 
 $lang = array_merge($lang, array(
     'ACL_M_NEW_EVILSYSTEM_REQUESTS'         => 'Can moderate requests',
+    'ACL_U_NEW_EVILSYSTEM_REQUESTS'         => 'Can moderate requests',
+    'ACL_A_NEW_EVILSYSTEM_REQUESTS'         => 'Can moderate requests',
 ));
