@@ -420,7 +420,7 @@ class main_controller
 						);
 						$sql = 'SELECT requests_status FROM ' . $this->requests_table . ' WHERE ' . $this->db->sql_build_array('SELECT', $check);
 
-						$requestStatus = ($this->db->fetchrow($this->db->sql_query($sql)))['requests_status'];
+						$requestStatus = ($this->db->sql_fetchrow($this->db->sql_query($sql)))['requests_status'];
 
 						if($requestStatus > 1) {
 							/*! Redirect after 3 seconds if no action is taken */
