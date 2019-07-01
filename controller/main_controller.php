@@ -122,8 +122,6 @@ class main_controller
 	{
 		$renderer = null;
 
-		var_dump($this->config['requests_cron_last_run']);
-		
 		switch($name) {
 			
 			case 'all': {
