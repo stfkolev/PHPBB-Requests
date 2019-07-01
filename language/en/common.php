@@ -57,6 +57,7 @@ $lang = array_merge($lang, array(
 	'REQUESTS_APPROVED'							=> 'You approved the reply!',
 	'REQUESTS_APPROVED_RETURN'					=> '%sReturn to the request%s',
 	'REQUESTS_NOT_FOUND'						=> 'Could not find this request!',
+	'REQUESTS_REQUEST_ALREADY_APPROVED'			=> 'The request is already approved!',
 	'REQUESTS_REQ_MADE'							=> 'Requests',
 	'REQUESTS_REPL_MADE'						=> 'Replies',
 	'REQUESTS_POSTS_MADE'						=> 'Posts',

@@ -331,7 +331,6 @@ class main_controller
 				/*! Create a block of vars of type replies */
 				while($row = $this->db->sql_fetchrow($result)) {
 
-					
 					$find = array(
 						'user_id'	=> $row['replies_user_id']
 					);
@@ -415,7 +414,23 @@ class main_controller
 					
 					/*! Check if request is post */
 					if($this->request->is_set_post('submit')) {
-						
+
+						$check = array(
+							'requests_id'	=> $name,
+						);
+						$sql = 'SELECT requests_status FROM ' . $this->requests_table . ' WHERE ' . $this->db->sql_build_array('SELECT', $check);
+
+						$requestStatus = ($this->db->fetchrow($this->db->sql_query($sql)))['requests_status'];
+
+						if($requestStatus > 1) {
+							/*! Redirect after 3 seconds if no action is taken */
+							meta_refresh(3, $this->helper->route('evilsystem_requests_controller', array('name' => 'all')));
+							$message = $this->language->lang('REQUESTS_REQUEST_ALREADY_APPROVED') . '<br /><br />' . $this->language->lang('REQUESTS_RETURN', '<a href="' . $this->helper->route('evilsystem_requests_controller', array('name' => 'all')) . '">', '</a>');
+							trigger_error($message);
+
+							break;
+						}
+
 						$data = array(
 							'replies_user_id'		=> (int) $this->user->data['user_id'],
 							'replies_request_id'	=> (int) $name,
