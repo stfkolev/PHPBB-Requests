@@ -63,6 +63,11 @@ $lang = array_merge($lang, array(
 	'REQUESTS_POSTS_MADE'						=> 'Posts',
 	'REQUESTS_APPROVE'							=> 'Approve',
 
+	/*! Request Status */
+	'REQUESTS_STATUS_WAITING'					=> 'Waiting',
+	'REQUESTS_STATUS_INPROGRESS'				=> 'In Progress',
+	'REQUESTS_STATUS_FINISHED'					=> 'Finished',
+
 	/*! Requests Table (Main Page) */
 	'REQUESTS_TABLE_TITLE'						=> 'Title',
 	'REQUESTS_TABLE_AUTHOR'						=> 'Author',

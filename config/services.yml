@@ -46,3 +46,15 @@ services:
             - [set_controller_helper, ['@controller.helper']]
         tags:
             - { name: notification.type }
+
+    evilsystem.requests.cron.task.requests:
+        class: evilsystem\requests\cron\task\requests
+        arguments:
+            - '@dbal.conn'
+            - '@config'
+            - '%evilsystem.requests.tables.evilsystem_requests_table%'
+            - '%evilsystem.requests.tables.evilsystem_requests_replies%'
+        calls:
+            - [set_name, [evilsystem.requests.cron.task.requests]]
+        tags:
+            - { name: cron.task }

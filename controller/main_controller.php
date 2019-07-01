@@ -66,8 +66,8 @@ class main_controller
 	 * @param \phpbb\user								$user				User object
 	 * @param string                        			$root_path          phpBB root path
      * @param string                        			$php_ext            phpEx 
-	 * @param \evilsystem\requests\table				$mods_table			String
-	 * @param \evilsystem\requests\table				$servers_table		String
+	 * @param \evilsystem\requests\table				$requests_table		String
+	 * @param \evilsystem\requests\table				$replies_table		String
 	 * @param \phpbb\textformatter\s9e\parser			$parser				Parser object
 	 * @param \phpbb\textformatter\s9e\renderer			$renderer			Renderer object
 	 * 
@@ -122,7 +122,10 @@ class main_controller
 	{
 		$renderer = null;
 
+		var_dump($this->config['requests_cron_last_run']);
+		
 		switch($name) {
+			
 			case 'all': {
 				/*! Requests Counter */
 				$counter = 0;
@@ -148,10 +151,10 @@ class main_controller
 
 					/*! Find number of replies for each request */
 					$sql = 'SELECT COUNT(*) as replies_count FROM ' . $this->replies_table . ' WHERE ' . $this->db->sql_build_array('SELECT', $findReplies);
-					$replies_count = $this->db->sql_fetchrow($this->db->sql_query($sql));
+					$replies_count = ($this->db->sql_fetchrow($this->db->sql_query($sql)))['replies_count'];
 
 					/*! If somebody replied, the request is in progress */
-					if($replies_count['replies_count'] > 0 && $replies_count['replies_count'] != null && $row['requests_status'] != 2) {
+					if($replies_count > 0 && $replies_count != null && $row['requests_status'] != 2) {
 						$data = array(
 							'requests_status' => 1,
 						);
@@ -179,8 +182,8 @@ class main_controller
 						'REQUEST_TITLE'					=> $this->db->sql_escape($row['requests_title']),
 						'REQUEST_AUTHOR'				=> $author['username'],
 						'REQUEST_TYPE'					=> $this->db->sql_escape($row['requests_type']),
-						'REQUEST_STATUS'				=> ($status == 0 ? 'Waiting' : ($status == 1 ? 'In Progress' : 'Finished')),
-						'REQUEST_REPLIES'				=> $replies_count['replies_count'],
+						'REQUEST_STATUS'				=> $this->language->lang(($status == 0 ? 'REQUESTS_STATUS_WAITING' : ($status == 1 ? 'REQUESTS_STATUS_INPROGRESS' : 'REQUESTS_STATUS_FINISHED'))),
+						'REQUEST_REPLIES'				=> $replies_count,
 					));
 
 					/*! Increment requests count */
@@ -421,6 +424,8 @@ class main_controller
 						$sql = 'SELECT requests_status FROM ' . $this->requests_table . ' WHERE ' . $this->db->sql_build_array('SELECT', $check);
 
 						$requestStatus = ($this->db->sql_fetchrow($this->db->sql_query($sql)))['requests_status'];
+
+						var_dump($requestStatus);
 
 						if($requestStatus > 1) {
 							/*! Redirect after 3 seconds if no action is taken */
