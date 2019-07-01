@@ -151,7 +151,7 @@ class main_controller
 					$replies_count = $this->db->sql_fetchrow($this->db->sql_query($sql));
 
 					/*! If somebody replied, the request is in progress */
-					if($replies_count['replies_count'] > 0 && $row['requests_status'] != 2) {
+					if($replies_count['replies_count'] > 0 && $replies_count['replies_count'] != null && $row['requests_status'] != 2) {
 						$data = array(
 							'requests_status' => 1,
 						);
@@ -284,7 +284,7 @@ class main_controller
 				);
 
 				$sql = 'SELECT requests_user_id FROM ' . $this->requests_table . ' WHERE ' . $this->db->sql_build_array('SELECT', $data);
-				$requestUserId = ( $this->db->sql_fetchrow($this->db->sql_query($sql)))['requests_user_id'];
+				$requestUserId = ($this->db->sql_fetchrow($this->db->sql_query($sql)))['requests_user_id'];
 
 				/*! User requests count */
 				$data = array(
