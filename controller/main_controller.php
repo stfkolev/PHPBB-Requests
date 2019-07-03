@@ -159,9 +159,6 @@ class main_controller
 						
 						$sql = 'UPDATE ' . $this->requests_table . ' SET ' . $this->db->sql_build_array('UPDATE', $data);
 
-						/*! Set current to progress */
-						$row['requests_status'] = 1;
-
 						/*! Execute Query */
 						$this->db->sql_query($sql);
 					}
