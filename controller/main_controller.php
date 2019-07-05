@@ -152,10 +152,10 @@ class main_controller
 					$replies_count = ($this->db->sql_fetchrow($this->db->sql_query($sql)))['replies_count'];
 
 					/*! If somebody replied, the request is in progress */
-					if($replies_count > 0 && $replies_count != null && $row['requests_status'] != 2) {
+					if((int) $replies_count > 0 && $replies_count != null && $row['requests_status'] != 2) {
 						$data = array(
 							'requests_status' => 1,
-						);
+						);	
 						
 						$sql = 'UPDATE ' . $this->requests_table . ' SET ' . $this->db->sql_build_array('UPDATE', $data);
 
