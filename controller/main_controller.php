@@ -152,13 +152,13 @@ class main_controller
 					$replies_count = ($this->db->sql_fetchrow($this->db->sql_query($sql)))['replies_count'];
 
 					/*! If somebody replied, the request is in progress */
-					if((int) $replies_count > 0 && $row['requests_status'] != 2) {
+					if((int)$row['requests_status'] != 2 && (int) $replies_count > 0) {
 						$data = array(
 							'requests_status' => 1,
 						);	
 						
-						$sql = 'UPDATE ' . $this->requests_table . ' SET ' . $this->db->sql_build_array('UPDATE', $data);
-
+						$sql = 'UPDATE ' . $this->requests_table . ' SET ' . $this->db->sql_build_array('UPDATE', $data) . ' WHERE ' .  $this->db->sql_in_set('requests_id', $name);
+						var_dump('updated id: ' . (int) $row['requests_id']);
 						/*! Execute Query */
 						$this->db->sql_query($sql);
 					}
@@ -278,7 +278,7 @@ class main_controller
 
 				/*! Select user */
 				$data = array(
-					'requests_id'	=> $name,
+					'requests_id'	=> (int)$name,
 				);
 
 				$sql = 'SELECT requests_user_id FROM ' . $this->requests_table . ' WHERE ' . $this->db->sql_build_array('SELECT', $data);
@@ -286,7 +286,7 @@ class main_controller
 
 				/*! User requests count */
 				$data = array(
-					'requests_user_id'	=> $requestUserId,
+					'requests_user_id'	=> (int)$requestUserId,
 				);
 
 				$sql = ' SELECT COUNT(*) as requests_made FROM ' . $this->requests_table . ' WHERE ' . $this->db->sql_build_array('SELECT', $data);
@@ -294,7 +294,7 @@ class main_controller
 
 				/*! User replies count */
 				$data = array(
-					'replies_user_id'	=> $requestUserId,
+					'replies_user_id'	=> (int)$requestUserId,
 				);
 
 				$sql = ' SELECT COUNT(*) as replies_made FROM ' . $this->replies_table . ' WHERE ' . $this->db->sql_build_array('SELECT', $data);
@@ -302,7 +302,7 @@ class main_controller
 
 				/*! Data to search by */
 				$data = array(
-					'requests_id'	=> $name,
+					'requests_id'	=> (int)$name,
 				);
 
 				/*! Request */
@@ -330,7 +330,7 @@ class main_controller
 				while($row = $this->db->sql_fetchrow($result)) {
 
 					$find = array(
-						'user_id'	=> $row['replies_user_id']
+						'user_id'	=> (int)$row['replies_user_id']
 					);
 					
 					/*! Find Author of reply */
@@ -341,7 +341,7 @@ class main_controller
 					
 					/*! User requests count */
 					$data = array(
-						'requests_user_id'	=> $author['user_id'],
+						'requests_user_id'	=> (int)$author['user_id'],
 					);
 
 					$sql = ' SELECT COUNT(*) as requests_made FROM ' . $this->requests_table . ' WHERE ' . $this->db->sql_build_array('SELECT', $data);
@@ -398,9 +398,9 @@ class main_controller
 					'REQUEST_ADDITIONAL'				=> $request['requests_additional'],
 					'REQUEST_WIDTH'						=> $request['requests_width'],
 					'REQUEST_HEIGHT'					=> $request['requests_height'],
-					'REQUEST_STATUS'					=> $request['requests_status'],
+					'REQUEST_STATUS'					=> (int)$request['requests_status'],
 					'REQUEST_IS_AUTHOR'					=> $author['user_id'] == $this->user->data['user_id'],
-					'REQUEST_IS_APPROVED'				=> $request['requests_status'] == 2,
+					'REQUEST_IS_APPROVED'				=> (int)$request['requests_status'] == 2,
 				));
 
 				/*! If is user registered */	
@@ -414,15 +414,13 @@ class main_controller
 					if($this->request->is_set_post('submit')) {
 
 						$check = array(
-							'requests_id'	=> $name,
+							'requests_id'	=> (int) $name,
 						);
 						$sql = 'SELECT requests_status FROM ' . $this->requests_table . ' WHERE ' . $this->db->sql_build_array('SELECT', $check);
 
 						$requestStatus = ($this->db->sql_fetchrow($this->db->sql_query($sql)))['requests_status'];
 
-						var_dump($requestStatus);
-
-						if($requestStatus > 1) {
+						if((int)$requestStatus > 1) {
 							/*! Redirect after 3 seconds if no action is taken */
 							meta_refresh(3, $this->helper->route('evilsystem_requests_controller', array('name' => 'all')));
 							$message = $this->language->lang('REQUESTS_REQUEST_ALREADY_APPROVED') . '<br /><br />' . $this->language->lang('REQUESTS_RETURN', '<a href="' . $this->helper->route('evilsystem_requests_controller', array('name' => 'all')) . '">', '</a>');
