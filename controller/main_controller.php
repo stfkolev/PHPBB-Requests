@@ -144,20 +144,22 @@ class main_controller
 
 					/*! Array for replies */
 					$findReplies = array(
-						'replies_request_id' => $row['requests_id'],
+						'replies_request_id' => (int) $row['requests_id'],
 					);
 
 					/*! Find number of replies for each request */
 					$sql = 'SELECT COUNT(*) as replies_count FROM ' . $this->replies_table . ' WHERE ' . $this->db->sql_build_array('SELECT', $findReplies);
-					$replies_count = ($this->db->sql_fetchrow($this->db->sql_query($sql)))['replies_count'];
+					$replies_count = (int) ($this->db->sql_fetchrow($this->db->sql_query($sql)))['replies_count'];
+
 
 					/*! If somebody replied, the request is in progress */
-					if((int)$row['requests_status'] != 2 && (int) $replies_count > 0) {
+					if((int)$row['requests_status'] != 2 && $replies_count > 0) {
 						$data = array(
 							'requests_status' => 1,
 						);	
+
 						
-						$sql = 'UPDATE ' . $this->requests_table . ' SET ' . $this->db->sql_build_array('UPDATE', $data) . ' WHERE ' .  $this->db->sql_in_set('requests_id', $name);
+						$sql = 'UPDATE ' . $this->requests_table . ' SET ' . $this->db->sql_build_array('UPDATE', $data) . ' WHERE ' .  $this->db->sql_in_set('requests_id', (int) $row['requests_id']);
 						
 						/*! Execute Query */
 						$this->db->sql_query($sql);
