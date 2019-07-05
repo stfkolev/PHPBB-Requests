@@ -19,7 +19,7 @@ class requests extends \phpbb\cron\task\base
 	 * How often we run the cron (in seconds).
 	 * @var int
 	 */
-	protected $cron_frequency = 604800;
+	protected $cron_frequency = 86400;
 
 	/** @var \phpbb\db\driver\driver_interface */
 	protected $db;
@@ -61,7 +61,6 @@ class requests extends \phpbb\cron\task\base
 	 */
 	public function run()
 	{	
-		var_dump('asdasd');
 		$sql = 'SELECT * FROM ' . $this->requests_table;
 
 		$result = $this->db->sql_query($sql);

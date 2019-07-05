@@ -158,7 +158,7 @@ class main_controller
 						);	
 						
 						$sql = 'UPDATE ' . $this->requests_table . ' SET ' . $this->db->sql_build_array('UPDATE', $data) . ' WHERE ' .  $this->db->sql_in_set('requests_id', $name);
-						var_dump('updated id: ' . (int) $row['requests_id']);
+						
 						/*! Execute Query */
 						$this->db->sql_query($sql);
 					}
