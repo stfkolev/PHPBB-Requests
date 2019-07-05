@@ -19,7 +19,7 @@ class requests extends \phpbb\cron\task\base
 	 * How often we run the cron (in seconds).
 	 * @var int
 	 */
-	protected $cron_frequency = 86400;
+	protected $cron_frequency = 259200;
 
 	/** @var \phpbb\db\driver\driver_interface */
 	protected $db;
