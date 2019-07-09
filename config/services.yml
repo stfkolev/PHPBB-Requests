@@ -5,6 +5,7 @@ services:
     evilsystem.requests.controller.main:
         class: evilsystem\requests\controller\main_controller
         arguments:
+            - '@auth'
             - '@config'
             - '@controller.helper'
             - '@template'
@@ -18,6 +19,7 @@ services:
             - '%evilsystem.requests.tables.evilsystem_requests_replies%'
             - '@text_formatter.parser'
             - '@text_formatter.renderer'
+            - '@text_formatter.utils'
 
     evilsystem.requests.controller.ucp:
         class: evilsystem\requests\controller\ucp_controller

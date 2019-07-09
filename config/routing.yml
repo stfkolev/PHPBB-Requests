@@ -8,6 +8,24 @@ reply_approve:
     requirements:
         id: \d+
 
+reply_disapprove:
+    path: /requests/{name}/{id}/disapprove
+    defaults: { _controller: evilsystem.requests.controller.main:disapprove }
+    requirements:
+        id: \d
+
+reply_edit:
+    path: /requests/{name}/{id}/modify
+    defaults: { _controller: evilsystem.requests.controller.main:reply_edit }
+    requirements:
+        id: \d+
+
+request_edit:
+    path: /requests/{name}/modify
+    defaults: { _controller: evilsystem.requests.controller.main:edit }
+    requirements:
+        name: \d+
+
 # evilsystem_replies_controller:
 #     path: /requests/{id}/{name}
 #     defaults: { _controller: evilsystem.requests.controller.main:actions }

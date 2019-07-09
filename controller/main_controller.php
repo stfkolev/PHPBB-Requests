@@ -15,6 +15,9 @@ namespace evilsystem\requests\controller;
  */
 class main_controller
 {
+	/** @var \phpbb\auth\auth */
+	protected $authr;
+
 	/** @var \phpbb\config\config */
 	protected $config;
 
@@ -54,9 +57,13 @@ class main_controller
 	/** @var \phpbb\textformatter\s9e\renderer */
 	protected $renderer;
 
+	/** @var \phpbb\textformatter\s9e\utils */
+	protected $utils;
+
 	/**
 	 * Constructor
 	 *
+	 * @param \phpbb\auth\auth							$author				Auth object
 	 * @param \phpbb\config\config						$config				Config object
 	 * @param \phpbb\controller\helper					$helper				Controller helper object
 	 * @param \phpbb\template\template					$template			Template object
@@ -73,14 +80,15 @@ class main_controller
 	 * 
 	 */
 	public function __construct(
-		\phpbb\config\config $config,
-		\phpbb\controller\helper $helper, 
-		\phpbb\template\template $template, 
-		\phpbb\language\language $language,
+		\phpbb\auth\auth					$auth,
+		\phpbb\config\config 				$config,
+		\phpbb\controller\helper 			$helper, 
+		\phpbb\template\template 			$template, 
+		\phpbb\language\language 			$language,
 
-		\phpbb\request\request $request,
-		\phpbb\db\driver\driver_interface $db,
-		\phpbb\user $user,
+		\phpbb\request\request 				$request,
+		\phpbb\db\driver\driver_interface 	$db,
+		\phpbb\user 						$user,
 		
 		$root_path,
 		$php_ext,
@@ -88,10 +96,12 @@ class main_controller
 		$requests_table,
 		$replies_table,
 
-		\phpbb\textformatter\s9e\parser $parser,
-		\phpbb\textformatter\s9e\renderer $renderer
+		\phpbb\textformatter\s9e\parser 	$parser,
+		\phpbb\textformatter\s9e\renderer 	$renderer,
+		\phpbb\textformatter\s9e\utils 		$utils
 	)
 	{
+		$this->auth				= $auth;
 		$this->config			= $config;
 		$this->helper			= $helper;
 		$this->template			= $template;
@@ -109,6 +119,7 @@ class main_controller
 
 		$this->parser 			= $parser;
 		$this->renderer			= $renderer;
+		$this->utils 			= $utils;
 	}
 
 	/**
@@ -369,7 +380,9 @@ class main_controller
 						'REPLY_AUTHOR_REPLIESMADE'		=> $authorRepliesMade,
 						'REPLY_ADDITIONAL'				=> $this->renderer->render($row['replies_additional']),
 						'REPLY_STATUS'					=> $row['replies_status'],
-						'REPLY_URL'						=> $this->user->page['root_script_path'] . strstr($this->user->page['page_name'], 'r') . '/' . $row['replies_id']  . '/approve',
+						'REPLY_URL_APPROVE'				=> $this->user->page['root_script_path'] . strstr($this->user->page['page_name'], 'r') . '/' . $row['replies_id']  . '/approve',
+						'REPLY_URL_DISAPPROVE'			=> $this->user->page['root_script_path'] . strstr($this->user->page['page_name'], 'r') . '/' . $row['replies_id']  . '/disapprove',
+						'REPLY_URL_EDIT'				=> $this->user->page['root_script_path'] . strstr($this->user->page['page_name'], 'r') . '/' . $row['replies_id']  . '/modify',
 					));
 				}
 
@@ -403,6 +416,8 @@ class main_controller
 					'REQUEST_STATUS'					=> (int)$request['requests_status'],
 					'REQUEST_IS_AUTHOR'					=> $author['user_id'] == $this->user->data['user_id'],
 					'REQUEST_IS_APPROVED'				=> (int)$request['requests_status'] == 2,
+					'REQUEST_CAN_EDIT'					=> $request['requests_user_id'] == $this->user->data['user_id'] || $this->auth->acl_get('u_new_evilsystem_requests'),
+					'REQUEST_EDIT_URL'					=> $this->user->page['root_script_path'] . strstr($this->user->page['page_name'], 'r') . '/modify',
 				));
 
 				/*! If is user registered */	
@@ -480,5 +495,177 @@ class main_controller
 		trigger_error($message);
 		
 		return $this->helper->render('requests_reply.html', $name);
+	}
+
+	public function disapprove($name, $id) {
+		$data = array(
+			'replies_status' => 0,
+		);
+
+		/*! Update Replies table */
+		$sql = 'UPDATE ' . $this->replies_table . ' SET ' . $this->db->sql_build_array('UPDATE', $data) . ' WHERE ' . $this->db->sql_in_set('replies_id', $id);
+		$this->db->sql_query($sql); 	
+
+		$data = array(
+			'requests_status'	=> 1,
+		);
+
+		$sql = 'UPDATE ' . $this->requests_table . ' SET ' . $this->db->sql_build_array('UPDATE', $data) . ' WHERE ' . $this->db->sql_in_set('requests_id', $name);
+		$this->db->sql_query($sql);
+
+		/*! Redirect after 3 seconds if no action is taken */
+		meta_refresh(3, $this->helper->route('evilsystem_requests_controller', array('name' => $name)));
+		$message = $this->language->lang('REQUESTS_DISAPPROVED') . '<br /><br />' . $this->language->lang('REQUESTS_DISAPPROVED_RETURN', '<a href="' . $this->helper->route('evilsystem_requests_controller', array('name' => $name)) . '">', '</a>');
+		trigger_error($message);
+		
+		return $this->helper->render('requests_reply.html', $name);
+	}
+
+	public function edit($name) {
+		$renderer = null;
+
+		$sql = 'SELECT * FROM ' . $this->requests_table . ' WHERE ' . $this->db->sql_in_set('requests_id', (int) $name);
+		$request = $this->db->sql_fetchrow($this->db->sql_query($sql));
+
+		$this->template->assign_vars(array(
+			'REQUEST_TITLE'			=> $request['requests_title'],
+			'REQUEST_TYPE'			=> $request['requests_type'],
+			'REQUEST_WIDTH'			=> $request['requests_width'],
+			'REQUEST_HEIGHT'		=> $request['requests_height'],
+			'REQUEST_ADDITIONAL'	=> $request['requests_additional'],
+		));
+
+		/*! If is user registered */	
+		if(
+			$this->user->data['is_registered'] && (int)$request['requests_status'] != 2 && 
+			($this->user->data['user_id'] == (int) $request['requests_user_id'] || $this->auth->acl_get('u_new_evilsystem_requests') == 1)
+		) {
+			/*! Add CSRF */
+			add_form_key('requests_edit');
+
+			$errors = array();
+			
+			/*! Check if request is post */
+			if($this->request->is_set_post('submit')) {
+				
+				// Test if the submitted form is valid
+				if (!check_form_key('requests_edit'))
+				{
+					$errors[] = $this->language->lang('FORM_INVALID');
+				}
+
+				/*! Check if no errors are met */
+				if(empty($errors)) {
+
+
+					/*! Prepare Data */
+					$data = array(
+						'requests_title' 			=> $this->request->variable('title', '', true),
+						'requests_type' 			=> $this->request->variable('type', '', true),
+						'requests_user_id'			=> $this->user->data['user_id'],
+						'requests_width'			=> $this->request->variable('width', 0),
+						'requests_height'			=> $this->request->variable('height', 0),
+						'requests_additional'		=> $this->request->variable('additional', '', true),
+					);
+
+					/*! Form query */
+					$sql = 'UPDATE '. $this->requests_table .' SET ' . $this->db->sql_build_array('UPDATE', $data) . ' WHERE ' . $this->db->sql_in_set('requests_id', (int) $name);
+
+					/*! Execute Query */
+					$result = $this->db->sql_query($sql);
+
+					/*! Redirect after 3 seconds if no action is taken */
+					meta_refresh(3, $this->helper->route('evilsystem_requests_controller', array('name' => 'all')));
+					$message = $this->language->lang('REQUESTS_REQUEST_EDITED') . '<br /><br />' . $this->language->lang('REQUESTS_RETURN', '<a href="' . $this->helper->route('evilsystem_requests_controller', array('name' => 'all')) . '">', '</a>');
+					trigger_error($message);
+				}
+
+				$s_errors = !empty($errors);
+				
+				$this->template->assign_vars(array(
+					'S_ERROR'		=> $s_errors,
+					'ERROR_MSG'		=> $s_errors ? implode('<br />', $errors) : '',
+				));
+			}
+
+			/*! Render Page */
+			$renderer = $this->helper->render('requests_edit.html', $name);
+		} else
+
+			/*! User is not registered, redirect to all servers if he attempts to get to /servers/add by url */
+			redirect($this->helper->route('evilsystem_requests_controller', array('name' => 'all')));
+
+		return $renderer;
+	}
+
+	public function reply_edit($name, $id) {
+		$renderer = null;
+
+		$sql = 'SELECT * FROM ' . $this->replies_table . ' WHERE ' . $this->db->sql_in_set('replies_id', (int) $id);
+		$reply = $this->db->sql_fetchrow($this->db->sql_query($sql));
+
+		$sql = 'SELECT * FROM ' . $this->requests_table . ' WHERE ' . $this->db->sql_in_set('requests_id', (int) $name);
+		$request = $this->db->sql_fetchrow($this->db->sql_query($sql));
+
+		$this->template->assign_vars(array(
+			'REPLY_ADDITIONAL' => $this->utils->unparse($reply['replies_additional']),
+		));
+
+		/*! If is user registered */	
+		if(
+			$this->user->data['is_registered'] && (int)$request['requests_status'] != 2 && 
+			($this->user->data['user_id'] == (int) $reply['replies_user_id'] || $this->auth->acl_get('u_new_evilsystem_requests') == 1)
+		) {
+			/*! Add CSRF */
+			add_form_key('reply_edit');
+
+			$errors = array();
+			
+			/*! Check if request is post */
+			if($this->request->is_set_post('submit')) {
+				
+				// Test if the submitted form is valid
+				if (!check_form_key('reply_edit'))
+				{
+					$errors[] = $this->language->lang('FORM_INVALID');
+				}
+
+				/*! Check if no errors are met */
+				if(empty($errors)) {
+
+
+					/*! Prepare Data */
+					$data = array(
+						'replies_additional' 	=> $this->parser->parse($this->request->variable('additional', '', true)),
+					);
+
+					/*! Form query */
+					$sql = 'UPDATE '. $this->replies_table .' SET ' . $this->db->sql_build_array('UPDATE', $data) . ' WHERE ' . $this->db->sql_in_set('replies_request_id', (int) $name);
+
+					/*! Execute Query */
+					$result = $this->db->sql_query($sql);
+
+					/*! Redirect after 3 seconds if no action is taken */
+					meta_refresh(3, $this->helper->route('evilsystem_requests_controller', array('name' => 'all')));
+					$message = $this->language->lang('REQUESTS_REPLY_EDITED') . '<br /><br />' . $this->language->lang('REQUESTS_RETURN', '<a href="' . $this->helper->route('evilsystem_requests_controller', array('name' => 'all')) . '">', '</a>');
+					trigger_error($message);
+				}
+
+				$s_errors = !empty($errors);
+				
+				$this->template->assign_vars(array(
+					'S_ERROR'		=> $s_errors,
+					'ERROR_MSG'		=> $s_errors ? implode('<br />', $errors) : '',
+				));
+			}
+
+			/*! Render Page */
+			$renderer = $this->helper->render('requests_reply_edit.html', $name);
+		} else
+
+			/*! User is not registered, redirect to all servers if he attempts to get to /servers/add by url */
+			redirect($this->helper->route('evilsystem_requests_controller', array('name' => 'all')));
+
+		return $renderer;
 	}
 }

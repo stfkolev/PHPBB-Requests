@@ -101,27 +101,14 @@ class main_listener implements EventSubscriberInterface
 	/**
 	 * Add option to the permissions
 	 */
-
 	 public function permissions_add_option($event) {
 		 
 		 $prevEvent = $event['permissions'];
 		 
-		 array_push($prevEvent, array(
-			 'm_requests'	=> array(
+		 $prevEvent['m_requests'] = array(
 				'lang' => 'ACL_M_NEW_EVILSYSTEM_REQUESTS',
 				'cat'	=> 'misc'
-			 ),
-
-			 'a_requests'	=> array(
-				'lang' => 'ACL_M_NEW_EVILSYSTEM_REQUESTS',
-				'cat'	=> 'misc'
-			 ),
-
-			 'u_requests'	=> array(
-				'lang' => 'ACL_M_NEW_EVILSYSTEM_REQUESTS',
-				'cat'	=> 'misc'
-			 ),
-		 ));
+		 );
 		 
 		 $event['permissions'] = $prevEvent;
 	 }

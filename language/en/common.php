@@ -43,6 +43,8 @@ $lang = array_merge($lang, array(
 
 	'REQUESTS_PAGE'								=> 'Requests',
 	'REQUESTS_PAGE_MAKE'						=> 'Make Request',
+	'REQUESTS_PAGE_EDIT'						=> 'Edit Request',
+	'REPLIES_PAGE_EDIT'						=> 'Edit Reply',
 	'VIEWING_EVILSYSTEM_REQUESTS'				=> 'Viewing Requests page',
 
 	/*! Errors */
@@ -51,17 +53,24 @@ $lang = array_merge($lang, array(
 	/*! Page Language */
 	'REQUESTS_COUNT'							=> '%d requests',
 	'REQUESTS_MAKE_REQUEST'						=> 'Make Request',
+	'REQUESTS_EDIT_REQUEST'						=> 'Edit Request',
 	'REQUESTS_PAGINATION'						=> 'Page <strong>%d</strong> of <strong>%d</strong>',
 	'REQUESTS_REQUEST_ADDED'					=> 'Your request has been added to our database successfully!',
+	'REQUESTS_REQUEST_EDITED'					=> 'Your request has been modified successfully!',
+	'REQUESTS_REPLY_EDITED'						=> 'Your reply has been modified successfully!',
 	'REQUESTS_RETURN'							=> '%sReturn to all requests%s',
 	'REQUESTS_APPROVED'							=> 'You approved the reply!',
 	'REQUESTS_APPROVED_RETURN'					=> '%sReturn to the request%s',
+	'REQUESTS_DISAPPROVED'						=> 'You disapproved the reply!',
+	'REQUESTS_DISAPPROVED_RETURN'				=> '%sReturn to the request%s',
 	'REQUESTS_NOT_FOUND'						=> 'Could not find this request!',
 	'REQUESTS_REQUEST_ALREADY_APPROVED'			=> 'The request is already approved!',
 	'REQUESTS_REQ_MADE'							=> 'Requests',
 	'REQUESTS_REPL_MADE'						=> 'Replies',
 	'REQUESTS_POSTS_MADE'						=> 'Posts',
 	'REQUESTS_APPROVE'							=> 'Approve',
+	'REQUESTS_DISAPPROVE'						=> 'Disapprove',
+	'REQUESTS_EDIT'								=> 'Modify',
 
 	/*! Request Status */
 	'REQUESTS_STATUS_WAITING'					=> 'Waiting',
@@ -86,6 +95,10 @@ $lang = array_merge($lang, array(
 	'REQUESTS_FORM_HEIGHT_DESC'					=> 'The height of the artwork (min. 0, max. 8192)',
 	'REQUESTS_FORM_ADDITIONAL'					=> 'Additional',
 	'REQUESTS_FORM_ADDITIONAL_DESC'				=> 'If you want to add something like topic, animations, here is the place',
+
+	/*! Reply Form Modify */
+	'REPLIES_FORM_ADDITIONAL'					=> 'Additional',
+	'REPLIES_FORM_ADDITIONAL_DESC'				=> 'If you want to change something you might missclicked',
 
 	/*! Requests Reply (View Request) */
 	'REQUESTS_VIEW_TYPE'						=> 'Type of the request',

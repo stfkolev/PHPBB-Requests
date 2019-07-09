@@ -31,6 +31,19 @@
             <div class="postbody">
                 <div id="post_content4">
 
+                    <ul class="post-buttons">
+                        <!-- IF REQUEST_CAN_EDIT  and not REQUEST_IS_APPROVED -->
+                        <li>
+                            <form method="post" name="editRequest" id="editRequest" action="{{ REQUEST_EDIT_URL }}">
+                                <button type="submit" title="Edit" class="button button-icon-only">
+                                    <i class="icon fa-pencil fa-fw" aria-hidden="true"></i><span
+                                        class="sr-only">{{ lang('REQUESTS_EDIT') }}</span>
+                                    </button>
+                            </form>
+                        </li>
+                        <!-- ENDIF -->
+                    </ul>
+
                     <h3 class="first"><a href="#p4">{{ REQUEST_TITLE }}</a></h3>
 
                     <p class="author">
@@ -95,22 +108,37 @@
 
                     <h3 class="first"><a href="#">{{ REQUEST_TITLE }}</a></h3>
                     
-                    <!-- IF REQUEST_IS_AUTHOR and not REQUEST_IS_APPROVED -->
+                    <!-- IF REQUEST_CAN_EDIT -->
                     <ul class="post-buttons">
+                        <!-- IF not REQUEST_IS_APPROVED -->
                         <li>
-                            <form method="post" name="approveRequest" id="approveRequest" action="{{ reply.REPLY_URL }}">
-                                <button type="submit" title="Approve" class="button button-icon-only">
+                            <form method="post" name="approveRequest" id="approveRequest" action="{{ reply.REPLY_URL_APPROVE }}">
+                                <button type="submit" title="{{ lang('REQUESTS_APPROVE') }}" class="button button-icon-only">
                                     <i class="icon fa-check fa-fw" aria-hidden="true"></i><span
                                         class="sr-only">{{ lang('REQUESTS_APPROVE') }}</span>
                                     </button>
                             </form>
                         </li>
-                        {# <li>
-                            <a href="#" title="Refuse" class="button button-icon-only">
-                                <i class="icon fa-times fa-fw" aria-hidden="true"></i><span
-                                    class="sr-only">Refuse</span>
-                            </a>
-                        </li> #}
+
+                        
+                        <li>
+                            <form method="post" name="modifyReply" id="modifyReply" action="{{ reply.REPLY_URL_EDIT }}">
+                                <button type="submit" title="{{ lang('REQUESTS_EDIT') }}" class="button button-icon-only">
+                                    <i class="icon fa-pencil fa-fw" aria-hidden="true"></i><span
+                                        class="sr-only">{{ lang('REQUESTS_EDIT') }}</span>
+                                    </button>
+                            </form>
+                        </li>
+                        <!-- ELSE -->
+                        <li>
+                            <form method="post" name="disapproveRequest" id="disapproveRequest" action="{{ reply.REPLY_URL_DISAPPROVE }}">
+                                <button type="submit" title="{{ lang('REQUESTS_DISAPPROVE') }}" class="button button-icon-only">
+                                    <i class="icon fa-times fa-fw" aria-hidden="true"></i><span
+                                        class="sr-only">{{ lang('REQUESTS_DISAPPROVE') }}</span>
+                                    </button>
+                            </form>
+                        </li>
+                        <!-- ENDIF -->
                     </ul>
                     <!-- ENDIF -->
 

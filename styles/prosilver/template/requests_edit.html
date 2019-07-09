@@ -1,0 +1,64 @@
+{% include 'overall_header.html' %}
+
+<form id="requests_edit" name="requests_edit" method="post">
+
+	<h2>{{ lang('REQUESTS_PAGE_EDIT') }}</h2>
+
+	<div class="panel">
+		<div class="inner">
+			<fieldset>
+				{% if S_ERROR %}
+					<p class="error">{{ ERROR_MSG }}</p>
+				{% endif %}
+
+				<dl>
+					<dt><label for="title">{{ lang('REQUESTS_FORM_TITLE') ~ lang('COLON') }}</label><br /><span>{{ lang('REQUESTS_FORM_TITLE_DESC') }}</span></dt>
+					<dd><input type="text" class="inputbox autowidth" size="20" maxlength="100" name="title" id="title" value="{{ REQUEST_TITLE }}"></dd>
+                </dl>
+                
+                <dl>
+					<dt><label for="type">{{ lang('REQUESTS_FORM_TYPE') ~ lang('COLON') }}</label><br /><span>{{ lang('REQUESTS_FORM_TYPE_DESC') }}</span></dt>
+					<dd><input type="text" class="inputbox autowidth" size="20" maxlength="100" name="type" id="type" value="{{ REQUEST_TYPE }}"></dd>
+                </dl>
+
+                <dl>
+                    <dt>
+                        <label for="width">{{ lang('REQUESTS_FORM_WIDTH') ~ lang('COLON') }}</label><br />
+                        <span>{{ lang('REQUESTS_FORM_WIDTH_DESC') }}</span>
+                    </dt>
+                    <dd>
+                        <input type="number" min="0" max="8192" class="inputbox autowidth" size="20" maxlength="100" name="width" id="width" value="{{ REQUEST_WIDTH }}">
+                    </dd>
+                </dl>
+
+                <dl>
+                    <dt>
+                        <label for="height">{{ lang('REQUESTS_FORM_HEIGHT') ~ lang('COLON') }}</label><br />
+                        <span>{{ lang('REQUESTS_FORM_WIDTH_DESC') }}</span>
+                    </dt>
+                    <dd>
+                        <input type="number" min="0" max="8192" class="inputbox autowidth" size="20" maxlength="100" name="height" id="height" value="{{ REQUEST_HEIGHT }}">
+                    </dd>
+                </dl>
+                
+                <dl>
+					<dt><label for="additional">{{ lang('REQUESTS_FORM_ADDITIONAL') ~ lang('COLON') }}</label><br /><span>{{ lang('REQUESTS_FORM_ADDITIONAL_DESC') }}</span></dt>
+					<dd>
+                        <textarea name="additional" id="additional" cols="10" rows="5">{{ REQUEST_ADDITIONAL }}</textarea>
+                    </dd>
+				</dl>
+			</fieldset>
+		</div>
+	</div>
+	<fieldset>
+		<dl>
+			<dt>&nbsp;</dt>
+			<dd><input type="submit" name="submit" id="submit" class="button1" value="{{ lang('SUBMIT') }}" tabindex="2" />&nbsp;
+				<input type="reset" name="reset" class="button2" value="{{ lang('RESET') }}" /></dd>
+		</dl>
+		{{ S_HIDDEN_FIELDS }}
+		{{ S_FORM_TOKEN }}
+	</fieldset>
+</form>
+
+{% include 'overall_footer.html' %}
