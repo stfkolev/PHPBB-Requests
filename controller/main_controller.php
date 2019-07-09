@@ -562,7 +562,6 @@ class main_controller
 					$data = array(
 						'requests_title' 			=> $this->request->variable('title', '', true),
 						'requests_type' 			=> $this->request->variable('type', '', true),
-						'requests_user_id'			=> $this->user->data['user_id'],
 						'requests_width'			=> $this->request->variable('width', 0),
 						'requests_height'			=> $this->request->variable('height', 0),
 						'requests_additional'		=> $this->request->variable('additional', '', true),
