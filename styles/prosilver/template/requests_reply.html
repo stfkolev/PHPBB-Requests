@@ -130,6 +130,8 @@
                             </form>
                         </li>
                         <!-- ELSE -->
+                        
+                        <!-- IF reply.REPLY_STATUS eq 1-->
                         <li>
                             <form method="post" name="disapproveRequest" id="disapproveRequest" action="{{ reply.REPLY_URL_DISAPPROVE }}">
                                 <button type="submit" title="{{ lang('REQUESTS_DISAPPROVE') }}" class="button button-icon-only">
@@ -138,6 +140,8 @@
                                     </button>
                             </form>
                         </li>
+                        <!-- ENDIF -->
+
                         <!-- ENDIF -->
                     </ul>
                     <!-- ENDIF -->
