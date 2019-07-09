@@ -600,6 +600,27 @@ class main_controller
 	public function reply_edit($name, $id) {
 		$renderer = null;
 
+		/*! BBCode */
+		require_once $this->root_path . 'includes/functions_display.' . $this->php_ext;
+		require_once $this->root_path . 'includes/functions_posting.' . $this->php_ext;
+
+		$this->language->add_lang('posting');
+
+		display_custom_bbcodes();
+		generate_smilies('inline', 0);
+
+		$this->template->assign_vars([
+			'S_LINKS_ALLOWED'	=> true,
+			'S_BBCODE_ALLOWED'	=> true,
+			'S_BBCODE_IMG'		=> true,
+			'S_BBCODE_QUOTE'	=> true,
+			'S_BBCODE_FLASH'	=> true,
+			'S_LINKS_ALLOWED'	=> true,
+
+			'S_SMILIES_ALLOWED'	=> true,
+		]);
+		/*! End BBCode */
+
 		$sql = 'SELECT * FROM ' . $this->replies_table . ' WHERE ' . $this->db->sql_in_set('replies_id', (int) $id);
 		$reply = $this->db->sql_fetchrow($this->db->sql_query($sql));
 
@@ -616,7 +637,7 @@ class main_controller
 			($this->user->data['user_id'] == (int) $reply['replies_user_id'] || $this->auth->acl_get('u_new_evilsystem_requests') == 1)
 		) {
 			/*! Add CSRF */
-			add_form_key('reply_edit');
+			add_form_key('postform');
 
 			$errors = array();
 			
@@ -624,7 +645,7 @@ class main_controller
 			if($this->request->is_set_post('submit')) {
 				
 				// Test if the submitted form is valid
-				if (!check_form_key('reply_edit'))
+				if (!check_form_key('postform'))
 				{
 					$errors[] = $this->language->lang('FORM_INVALID');
 				}
@@ -635,7 +656,7 @@ class main_controller
 
 					/*! Prepare Data */
 					$data = array(
-						'replies_additional' 	=> $this->parser->parse($this->request->variable('additional', '', true)),
+						'replies_additional' 	=> $this->parser->parse($this->request->variable('message', '', true)),
 					);
 
 					/*! Form query */

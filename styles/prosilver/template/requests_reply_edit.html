@@ -1,6 +1,6 @@
 {% include 'overall_header.html' %}
 
-<form id="reply_edit" name="reply_edit" method="post">
+<form id="postform" name="postform" method="post">
 
 	<h2>{{ lang('REPLIES_PAGE_EDIT') }}</h2>
 
@@ -12,9 +12,13 @@
 				{% endif %}
                 
                 <dl>
-					<dt><label for="additional">{{ lang('REPLIES_FORM_ADDITIONAL') ~ lang('COLON') }}</label><br /><span>{{ lang('REPLIES_FORM_ADDITIONAL_DESC') }}</span></dt>
+					<dt><label for="message">{{ lang('REPLIES_FORM_ADDITIONAL') ~ lang('COLON') }}</label><br /><span>{{ lang('REPLIES_FORM_ADDITIONAL_DESC') }}</span></dt>
 					<dd>
-                        <textarea name="additional" id="additional" cols="10" rows="5">{{ REPLY_ADDITIONAL }}</textarea>
+						{{ include('posting_buttons.html') }}
+	
+						<textarea name="message" id="message" onselect="storeCaret(this);" onclick="storeCaret(this);"
+							onkeyup="storeCaret(this);" onfocus="initInsertions();" data-bbcode="true"
+							rows="10">{{ REPLY_ADDITIONAL }}</textarea><br>
                     </dd>
 				</dl>
 			</fieldset>

@@ -120,7 +120,6 @@
                             </form>
                         </li>
 
-                        
                         <li>
                             <form method="post" name="modifyReply" id="modifyReply" action="{{ reply.REPLY_URL_EDIT }}">
                                 <button type="submit" title="{{ lang('REQUESTS_EDIT') }}" class="button button-icon-only">
@@ -130,7 +129,7 @@
                             </form>
                         </li>
                         <!-- ELSE -->
-                        
+
                         <!-- IF reply.REPLY_STATUS eq 1-->
                         <li>
                             <form method="post" name="disapproveRequest" id="disapproveRequest" action="{{ reply.REPLY_URL_DISAPPROVE }}">
