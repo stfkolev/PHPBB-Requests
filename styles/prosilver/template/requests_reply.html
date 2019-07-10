@@ -119,7 +119,8 @@
                                     </button>
                             </form>
                         </li>
-
+                        
+                        <!-- IF REQUEST_HAS_PERMISSION -->
                         <li>
                             <form method="post" name="modifyReply" id="modifyReply" action="{{ reply.REPLY_URL_EDIT }}">
                                 <button type="submit" title="{{ lang('REQUESTS_EDIT') }}" class="button button-icon-only">
@@ -128,9 +129,11 @@
                                     </button>
                             </form>
                         </li>
+                        <!-- ENDIF -->
+
                         <!-- ELSE -->
 
-                        <!-- IF reply.REPLY_STATUS eq 1-->
+                        <!-- IF reply.REPLY_STATUS eq 1 -->
                         <li>
                             <form method="post" name="disapproveRequest" id="disapproveRequest" action="{{ reply.REPLY_URL_DISAPPROVE }}">
                                 <button type="submit" title="{{ lang('REQUESTS_DISAPPROVE') }}" class="button button-icon-only">

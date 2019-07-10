@@ -396,7 +396,7 @@ class main_controller
 				
 				$authorAvatar = get_user_avatar($author['user_avatar'], $author['user_avatar_type'], $author['user_avatar_width'], $author['user_avatar_height']);
 				$authorRank = phpbb_get_user_rank($author, $author['user_posts']);
-				
+
 				/*! Assing basic variables */
 				$this->template->assign_vars(array(
 					'REQUEST_ID'						=> $request['requests_id'],
@@ -416,7 +416,8 @@ class main_controller
 					'REQUEST_STATUS'					=> (int)$request['requests_status'],
 					'REQUEST_IS_AUTHOR'					=> $author['user_id'] == $this->user->data['user_id'],
 					'REQUEST_IS_APPROVED'				=> (int)$request['requests_status'] == 2,
-					'REQUEST_CAN_EDIT'					=> $request['requests_user_id'] == $this->user->data['user_id'] || $this->auth->acl_get('u_new_evilsystem_requests'),
+					'REQUEST_CAN_EDIT'					=> $request['requests_user_id'] == $this->user->data['user_id'] || $this->auth->acl_get('m_new_evilsystem_requests'),
+					'REQUEST_HAS_PERMISSION'			=> $this->auth->acl_get('m_new_evilsystem_requests'),
 					'REQUEST_EDIT_URL'					=> $this->user->page['root_script_path'] . strstr($this->user->page['page_name'], 'r') . '/modify',
 				));
 

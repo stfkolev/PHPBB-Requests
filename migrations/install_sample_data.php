@@ -44,7 +44,7 @@ class install_sample_data extends \phpbb\db\migration\migration
 	{
 		return array(
 			// Add new permissions
-			array('permission.add', array('u_new_evilsystem_requests')), // New moderator permission
+			array('permission.add', array('m_new_evilsystem_requests')), // New moderator permission
 
 			// array('permission.add', array('a_copy', true, 'a_existing')), // New admin permission a_copy, copies permission settings from a_existing
 
